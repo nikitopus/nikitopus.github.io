@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>6. Доступность (availability) и репликация (replication). Основные стратегии репликации: пессимистичная и оптимистичная. Основные методы репликации: репликация с одним и несколькими мастерами (Single-master and multi-master replication). Синхронная и асинхронная репликация. Преимущества и недостатки разных типов репликации. Разрешение конфликтов. Варианты организации чтения/записи. Кворумы (quorums).</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="48698732-6278-4f93-8c69-29d36cdf3579" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🎀</span></div><h1 class="page-title">6. Доступность (availability) и репликация (replication). Основные стратегии репликации: пессимистичная и оптимистичная. Основные методы репликации: репликация с одним и несколькими мастерами (Single-master and multi-master replication). Синхронная и асинхронная репликация. Преимущества и недостатки разных типов репликации. Разрешение конфликтов. Варианты организации чтения/записи. Кворумы (quorums).</h1><p class="page-description"></p></header><div class="page-body"><hr id="1b495243-b56f-493a-b1e1-6af868b6e953"/><h3 id="53f49030-a0cd-4616-a83c-f41770e490ea" class="">Доступность и репликация</h3><p id="a38aae82-a58b-4f06-83ae-d40c6ffcd5ac" class=""><strong>Доступность</strong> – способность системы оставаться работоспособной, несмотря на сбои в ее частях.</p><p id="556a2da4-cc6e-4f57-9db5-14b206d7e6a5" class=""><strong>Репликация</strong> — основной метод, используемый в распределенных системах для повышения доступности. Он заключается в хранении одного и того же фрагмента данных на нескольких узлах (называемых репликами), так что в случае сбоя одного из них данные не теряются, а запросы могут тем временем обслуживаться с других узлов.</p><p id="6d88ffc4-b46d-4afb-b0d1-e9320a3e77a6" class="">Репликация подразумевает, что теперь в системе есть несколько копий каждого фрагмента данных, которые необходимо поддерживать и синхронизировать друг с другом при каждом обновлении, однако это не всегда возможно; для достижения этого идеала могут потребоваться значительные аппаратные ресурсы или отказ от других желаемых свойств.</p><hr id="71ee353b-c02c-409f-b2af-9682af6aa45f"/><h3 id="aab07404-ce0f-4047-9471-16445a5c3745" class="">Основные стратегии репликации:</h3><p id="4cd4fd65-4967-4205-bc33-15565d59ebe1" class=""><strong>Пессимистическая репликация</strong> пытается с самого начала гарантировать, что все реплики идентичны друг другу, как если бы все время существовала только одна копия данных.</p><p id="3f6ba9f1-a7d1-4ce7-b65d-c4bff6e8d89b" class=""><strong>Оптимистическая репликация</strong> (также называемая ленивой репликацией) позволяет различным репликам расходиться, гарантируя, что они снова сойдутся, если система не получит никаких обновлений (также называемых стабилизированными) в течение определенного периода времени.</p><hr id="a0742d04-3df1-4b8a-9796-5be0464d5716"/><h3 id="c94c5ba2-0508-48f7-8e72-efc475992bac" class="">Основные методы репликации:</h3><p id="014ea117-1edd-4c99-a181-4f5a1707cc47" class=""><strong>Репликация с одним мастером</strong>.  Один узел среди реплик назначается главным (или основным) и отвечает за получение всех обновлений.</p><p id="d8eb38ab-2097-4acc-8c19-b1f6b746b7fd" class="">Остальные реплики обычно называются ведомыми (или вторичными), и они могут обрабатывать только запросы на чтение. Каждый раз, когда мастер получает обновление, он отвечает за распространение этого обновления на другие узлы, помимо его локального выполнения, гарантируя, что все реплики будут поддерживать согласованное представление данных. Распространение обновлений может осуществляться двумя способами: синхронно или асинхронно.</p><p id="88474349-e714-498e-ba90-f21ca384ce5c" class=""><strong>Преимущества:</strong></p><ul id="740cf84d-dad5-4594-961e-d6011ddcad95" class="bulleted-list"><li style="list-style-type:disc">Простота для понимания и реализации.</li></ul><ul id="45275d36-1a48-4891-8a98-eb890193bf69" class="bulleted-list"><li style="list-style-type:disc">Параллельные операции сериализуются в главном узле, что устраняет необходимость в более сложных распределенных протоколах параллелизма.</li></ul><ul id="53443225-3291-4722-b27e-a0b5551d7aea" class="bulleted-list"><li style="list-style-type:disc">Масштабируемость для рабочих нагрузок с большим количеством операций чтения, поскольку емкость запросов на чтение может быть увеличена за счет добавления дополнительных реплик чтения.</li></ul><p id="a662dd60-5e9b-45d1-9c3a-a8507305d810" class=""><strong>Недостатки:</strong></p><ul id="35081f5d-1592-4236-96ae-0a797abf5e53" class="bulleted-list"><li style="list-style-type:disc">Не очень масштабируем для рабочих нагрузок записи, так как мощность записи определяется емкостью одного узла (главного).</li></ul><ul id="29557820-dc4f-4495-b4a9-c3c46f65840d" class="bulleted-list"><li style="list-style-type:disc">Компромисс между производительностью, долговечностью и согласованностью.</li></ul><ul id="6dc66c38-6b0e-49d4-921c-d5509e90e256" class="bulleted-list"><li style="list-style-type:disc">Переход на подчиненный узел, когда происходит сбой главного узла, не происходит мгновенно, это может привести к простою, а также создает риск ошибок. Два подхода к отказоустойчивости: ручной или автоматизированный.</li></ul><ul id="2f1a4dbc-d9a1-479e-8142-d240db0707e9" class="bulleted-list"><li style="list-style-type:disc">Несмотря на то, что емкость чтения может быть увеличена за счет добавления дополнительных подчиненных узлов, пропускная способность сети главного узла может оказаться узким местом.</li></ul><p id="77843990-1989-4d9f-94f1-2b2fd0167398" class=""><strong>Репликация с несколькими мастерами.</strong></p><p id="2a6fb895-b874-4476-96f0-6dbd7929b30c" class="">Single-master имеет некоторые ограничения с точки зрения производительности, масштабируемости и доступности.</p><ul id="3396e346-1e94-4650-b83d-fbd096f2a178" class="bulleted-list"><li style="list-style-type:disc">Существуют приложения, для которых доступность и производительность гораздо важнее согласованности данных или семантики транзакций.</li></ul><ul id="1bbb3ca5-b1af-4608-b74b-16083e335859" class="bulleted-list"><li style="list-style-type:disc">Альтернативный метод репликации, который отдает предпочтение более высокой доступности и производительности, а не согласованности данных.</li></ul><ul id="b67ff6c2-a9d5-4e37-8f3e-3e2e4f2b4d13" class="bulleted-list"><li style="list-style-type:disc">Все реплики считаются равными и могут принимать запросы на запись</li></ul><ul id="4ff780ee-a1f5-449d-9b95-dbceaf51c06c" class="bulleted-list"><li style="list-style-type:disc">Нет единого главного узла, который сериализует запросы, накладывая единый порядок.</li></ul><ul id="bf5d90f5-d368-414f-a2c6-e421d47d1c08" class="bulleted-list"><li style="list-style-type:disc">Узлы могут не согласиться с правильным порядком для некоторых запросов — конфликт</li></ul><hr id="b3edc8cd-773d-47cc-8758-cce156206f9a"/><h3 id="1a2d698a-0025-439d-ab24-c1352aaeceba" class="">Синхронная и асинхронная репликация</h3><p id="7daf6564-cbbd-47d2-a327-684e39916dcb" class=""><strong>Синхронная репликация. </strong></p><p id="dce48181-a6c3-4182-92cd-510cde8568a4" class="">При синхронной репликации узел может ответить клиенту, указав, что обновление завершено, только после получения подтверждения от других реплик о том, что они также выполнили обновление в своем локальном хранилище.</p><ul id="edcc02db-3fdc-46ff-b744-e532967154f4" class="bulleted-list"><li style="list-style-type:disc">Гарантирует, что после подтверждения обновления клиенту он сможет просмотреть это обновление при последующем чтении, независимо от того, из какой реплики он считывает данные.</li></ul><ul id="7743e41e-a882-4b2f-a41f-58b75ce93883" class="bulleted-list"><li style="list-style-type:disc">Обеспечивает повышенную надежность, поскольку обновление не будет потеряно, даже если мастер выйдет из строя сразу после подтверждения обновления.</li></ul><p id="cb3ad0ed-d9d8-4bcc-a2d1-c9aed6ecd6f3" class="">Однако этот метод может сделать запросы на запись медленнее, поскольку мастер должен ждать, пока не будут получены ответы от всех реплик.</p><p id="24ec8b4e-3865-4092-88e0-df0ba3da9542" class=""><strong>Асинхронная репликация. </strong></p><p id="813c17f6-3ef7-48de-80c7-46c5d5eef17e" class="">При асинхронной репликации узел может ответить клиенту, как только он выполнит обновление в своем локальном хранилище, не дожидаясь ответов от других реплик.</p><ul id="bd9abc5f-1a5a-4cca-b30f-18994fdb7da8" class="bulleted-list"><li style="list-style-type:disc">Значительно увеличивает производительность для запросов на запись, поскольку клиент больше не платит штраф за сетевые запросы к другим репликам, однако за это приходится платить снижением согласованности и долговечности.</li></ul><ul id="9441dc20-a227-48c4-bd97-ffd52d7a3a21" class="bulleted-list"><li style="list-style-type:disc">После того, как клиент получил ответ на запрос обновления, он может прочитать более старые (устаревшие) значения при последующем чтении, если эта операция происходит в одной из реплик, которая еще не выполнила обновление. Кроме того, если главный узел дает сбой сразу после подтверждения обновления и запросы «распространения» к другим репликам теряются, то подтвержденное обновление в конечном итоге теряется.</li></ul><hr id="a881bfbd-b377-40d2-a45e-066f2e50a483"/><h3 id="a5986355-61ce-4591-a01c-d0ed87d4142b" class="">Решение конфликтов</h3><p id="435cd44b-1ae5-4e7f-af30-413cd18fa90b" class="">Множество различных способов разрешения конфликтов в зависимости от гарантий, которые система хочет предоставить.</p><p id="ad94e54c-b920-414e-9b78-314537dbb4f5" class="">Решите конфликт охотно или лениво:</p><ul id="0b922a4d-d099-4f3a-b2fe-5b4665029a64" class="bulleted-list"><li style="list-style-type:disc">Охотно: конфликт разрешается во время операции записи.</li></ul><ul id="d3b954cd-fcb2-4485-9bdb-bb97fbb29b9b" class="bulleted-list"><li style="list-style-type:disc">Лениво: операция записи продолжает поддерживать несколько альтернативных версий записи данных, и они в конечном итоге преобразуются в одну версию позже, т. е. во время последующей операции чтения.</li></ul><p id="ce813277-9959-4546-820d-ce97b7a523ce" class="">Подходы к разрешению конфликтов:</p><ol type="1" id="f21e8eb6-f9d4-42f5-93d9-4adf8c0c15d6" class="numbered-list" start="1"><li>Демонстрация разрешения конфликтов клиентам. Пусть сам решает что правильно</li></ol><ol type="1" id="ca3592a8-7f99-4f7b-ae2e-ae12f6067473" class="numbered-list" start="2"><li>Разрешение конфликтов «победит последняя запись». Каждый узел помечает каждую версию отметкой времени, используя локальные часы. Во время конфликта выбирается версия с самой последней отметкой времени. Поскольку не может быть глобального понятия времени, этот метод может привести к неожиданному поведению, такому как запись A вместо записи B, даже если B произошло «в результате» A.</li></ol><ol type="1" id="d57f1870-0378-4235-81f2-3d74cc31fb94" class="numbered-list" start="3"><li>Алгоритмы отслеживания причинно-следственных связей. Система использует алгоритм, который отслеживает причинно-следственные связи между различными запросами. Когда возникает конфликт между двумя операциями записи (A, B) и определяется, что одна из них является причиной другой (предположим, что A является причиной B), результирующая запись (B) сохраняется.</li></ol><hr id="eb2f4fd2-856c-407e-9302-ddf572b1cd5a"/><h3 id="3314b4a9-a3df-4a1d-aaa1-9094366efa24" class="">Варианты организации чтения/записи (кворумы)</h3><p id="8daf10da-3b78-4d39-ae94-43a8572b663e" class="block-color-orange_background"><strong>Кворум</strong> в контексте распределенных систем обозначает <br/>минимальное количество участвующих узлов или голосов, необходимое для <br/>принятия решения или операции.<br/></p><p id="0ebbeea9-d4d7-40fd-9091-6f980d04c1c2" class="">Предыдущие сценарии: запись выполняется на все узлы-реплики, а чтение выполняется на один из них — доступность для операций записи низкая.</p><p id="32f5685b-969e-450f-82a6-d5b5271cfa0d" class="">Обратная стратегия: запись данных только на тот узел, который отвечает за обработку операции записи, но обработка операций чтения, путем чтения со всех узлов и возврата самого последнего значения — увеличивает доступность записи, но снижает доступность чтения в то же время. </p><p id="8ef23c5f-6ec2-4e5a-8a89-fc6c462e773c" class="">Механизм достижения баланса в вышеупомянутом компромиссе:</p><ul id="e95bbbbc-974b-48f0-98b4-67122ec6713e" class="bulleted-list"><li style="list-style-type:disc">Например, в системе с 3 репликами можно сказать, что операции записи должны выполняться на 2 узлах (также известном как кворум 2), а операции чтения должны извлекать данные с 2 узлов. Чтение должно будет считывать последнее значение,</li></ul><ul id="9a08ffb5-699a-45e8-8e09-41baf40d2684" class="bulleted-list"><li style="list-style-type:disc">протокол голосования на основе кворума для управления репликами</li></ul><p id="86dc5231-fb2b-4503-8775-020f3f648a97" class="">Как правило, в системе с общим числом реплик V каждая операция чтения должна иметь кворум чтения реплик Vr, а операция записи должна иметь кворум записи реплик Vw соответственно.</p><p id="5b2f22bd-072c-4cae-a7de-15b7fa5931e3" class="">Vr + Vw &gt; V - элемент данных не читается и не записывается двумя операциями одновременно</p><p id="3ba76a44-1791-4806-aaa2-9d47ce818416" class="">Vw &gt; V/2 — хотя бы один узел, который получит обе 2 операции записи и сможет наложить на них порядок.</p><p id="2cec64b1-a50f-4ab4-ac5d-d74cbb22276e" class="">Оба правила вместе гарантируют, что связанная распределенная база данных ведет себя как централизованная система базы данных с одной репликой.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

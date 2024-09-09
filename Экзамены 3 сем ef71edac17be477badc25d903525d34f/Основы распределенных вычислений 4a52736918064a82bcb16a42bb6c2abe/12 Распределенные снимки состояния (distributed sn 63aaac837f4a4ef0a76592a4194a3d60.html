@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>12. Распределенные снимки состояния (distributed snapshots). Алгоритм Чанди-Лампорта (Chandy-Lamport). Согласованный снимок состояния (consistent snapshot).</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="63aaac83-7f4a-4ef0-a765-92a4194a3d60" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📙</span></div><h1 class="page-title">12. Распределенные снимки состояния (distributed snapshots). Алгоритм Чанди-Лампорта (Chandy-Lamport). Согласованный снимок состояния (consistent snapshot).</h1><p class="page-description"></p></header><div class="page-body"><p id="955ea894-3b84-4987-8586-a6572937cad6" class="">полезная ссылка <a href="https://decomposition.al/blog/2019/04/26/an-example-run-of-the-chandy-lamport-snapshot-algorithm/">https://decomposition.al/blog/2019/04/26/an-example-run-of-the-chandy-lamport-snapshot-algorithm/</a></p><hr id="d7738e3a-a3e6-46ce-b335-594d690cf3de"/><p id="694b250a-ab19-41a5-8048-e453da142083" class="">Тезисно:</p><p id="e1b1cb68-87f9-4bed-bc9c-c5726ca996bd" class="">Моментальный снимок состояния в контексте распределенных систем - это как бы &quot;фотография&quot; всех происходящих в системе событий в определенный момент времени. В этот момент система &quot;замораживается&quot;, и мы запоминаем все ее состояние: значения всех переменных, статус всех узлов и данные.</p><p id="427e0deb-0430-475d-b0e6-1fe69a92bf0e" class="">Это важно, потому что в распределенных системах много вещей происходит одновременно на разных узлах, и моментальный снимок помогает нам понять, что происходило в тот конкретный момент времени. Такой снимок может использоваться для анализа состояния системы, отладки или восстановления после сбоев. Это как бы &quot;фиксация&quot; всего происходящего в системе на короткое время для того, чтобы мы могли взглянуть на нее и понять, что происходит.</p><hr id="7468b105-a0b8-4df9-aba0-d32b2d45e544"/><h3 id="75c02e59-c812-4af9-9c4e-d2778dea29ca" class="">Вступление</h3><p id="33a094d4-2f6f-44f5-93fd-48fc5486e631" class="">Существует еще одна основная проблема в области распределенных систем, которая тесно связана с понятием времени и порядка: как записать моментальный снимок состояния распределенной системы, состоящей из множества узлов, выполняющих непрерывные вычисления. Этот моментальный снимок можно просто использовать в качестве механизма восстановления с момента возникновения сбоев в прошлом. Однако в распределенных системах существует гораздо больше проблем, которые могут быть выражены в терминах проблемы обнаружения глобального состояния и связанных с ним специфических свойств.</p><hr id="6c117ee1-75cf-4909-8875-8962c6fab132"/><h3 id="bde8d7b6-c86a-43aa-bc12-3e92430f0e6a" class="">Алгоритм Чанди-Лампорта</h3><p id="34a8571b-67b5-4cd4-9f79-18cb4642a143" class="">Состояние распределенной системы состоит из состояния различных узлов и любых сообщений, которые передаются между узлами. Основная проблема<br/>при записи этого состояния заключается в том, что узлы, входящие в систему, не<br/>имеют общих часов, поэтому они не могут записывать свои локальные состояния точно<br/>в один и тот же момент. В результате узлы должны координироваться друг с другом<br/>путем обмена сообщениями, так что каждый узел записывает свое состояние и состояние<br/>связанных каналов связи. Таким образом, совокупный набор состояний всех узлов<br/>и каналов сформирует глобальное состояние. Кроме того, любое взаимодействие, требуемое протоколом моментального снимка, не должно изменять лежащие<br/>в основе вычисления.<br/></p><h3 id="9c0d88e1-9393-4fc5-a710-d158488547b8" class="">Пример</h3><p id="0b331201-3c11-44ae-9f27-84a7d148a2ff" class="">Представьте себе группу фотографов, наблюдающих панорамную, динамичную сцену, такую как небо, заполненное мигрирующими птицами. Эта сцена настолько велика, что она невозможно запечатлеть на одной фотографии. В результате фотографы должны сделать несколько снимков и соединить их вместе, чтобы сформировать картину общей сцены. Снимки не могут быть сделаны одновременно, и фотографы не должны мешать фотографируемому процессу, т.е. они не могут заставить всех птиц оставаться неподвижными во время съемки. Однако составной снимок должен быть содержательным. Эта потребность в содержательном моментальном снимке все еще существует, когда речь заходит о распределенных системах.</p><hr id="944ba45c-655d-4d34-9321-d809f0f3d4e1"/><h3 id="d0def3aa-cea8-4db1-9f7a-f8a00247134f" class="">Алгоритм</h3><h3 id="690a2988-0f31-4962-bc5f-44fa7f36dbd1" class="">Входные условия</h3><p id="56443188-263b-45d1-8380-8fae61776810" class="">Предположим, что распределенную систему можно смоделировать как ориентированный граф, где вершины представляют узлы системы, а ребра представляют каналы связи.</p><p id="0919248c-925b-499b-8fac-605c8863f189" class="">Событие e в узле p - это атомарное действие, которое может изменить состояние p сам по себе и состояние не более чем одного канала c, поступающего на p: состояние c может быть изменено отправкой сообщения M по каналу c (если c является исходящим ребром из p) или получением сообщения M по каналу c (если c является входящим ребром в p). Таким образом, событие e может быть представлено кортежем &lt;p, s, s&#x27;, M, c&gt;, где s и s&#x27; - предыдущее и новое состояние узла. Событие <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">e_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> перемещает глобальное состояние системы из <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">S_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> в <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">S_{i+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>. Таким образом, снимок <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>s</mi><mi>n</mi><mi>a</mi><mi>p</mi><mi>s</mi><mi>h</mi><mi>o</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{snapshot}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">na</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">h</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> является <strong>согласованным</strong>, если: <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>s</mi><mi>n</mi><mi>a</mi><mi>p</mi><mi>s</mi><mi>h</mi><mi>o</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{snapshot}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">na</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">h</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> доступен из состояния <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{start}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>, в котором был запущен алгоритм. Состояние отправки, в котором завершается алгоритм, также доступно из <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>s</mi><mi>n</mi><mi>a</mi><mi>p</mi><mi>s</mi><mi>h</mi><mi>o</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{snapshot}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">na</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">h</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>.</p><p id="29b6ef5a-54d3-4ad5-a78b-1e00e8638aee" class="">Давайте предположим, что у нас есть очень простая распределенная система, состоящая из 2 узлов p, q и двух каналов c, c&#x27;</p><figure id="c6967a7a-cb7d-4163-803b-bebcf7be67a8" class="image"><a href="12%20%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B8%20%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F%20(distributed%20sn%2063aaac837f4a4ef0a76592a4194a3d60/Untitled.png"><img style="width:2000px" src="12%20%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B8%20%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F%20(distributed%20sn%2063aaac837f4a4ef0a76592a4194a3d60/Untitled.png"/></a></figure><p id="0d1ae2ce-8a54-4126-93db-c758c0d46f91" class="">Система содержит один токен, который передается между узлами. Каждый узел имеет два возможных состояния s0 и s1, где s0 - это состояние, в котором узел не обладает токеном, а s1-это состояние, в котором он обладает.</p><p id="c89651e2-1cc2-4cfb-a76b-d717756fcd77" class="">На рисунке ниже представлены возможные глобальные состояния системы и связанные с ним переходы </p><figure id="5a6db089-d4b5-41d5-b2b7-775ef08b639a" class="image"><a href="12%20%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B8%20%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F%20(distributed%20sn%2063aaac837f4a4ef0a76592a4194a3d60/Untitled%201.png"><img style="width:2000px" src="12%20%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B8%20%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F%20(distributed%20sn%2063aaac837f4a4ef0a76592a4194a3d60/Untitled%201.png"/></a></figure><p id="467a3427-dfe8-4b79-bc6d-9aeb740fd664" class="">В результате снимок, в котором состояние равно s0 для обоих узлов, а состояние обоих каналов пусто, не будет согласованным, поскольку токен потерян! Моментальный снимок, в котором состояниями являются s1 и s0, а канал c содержит токен, также не согласован, поскольку теперь в системе есть два токена. </p><p id="56fcf77a-eacc-46f4-a73f-95bde4994974" class="">Алгоритм основан на следующей основной идее: <strong>маркерное сообщение отправляется между узлами с использованием доступных каналов связи, которое представляет собой инструкцию узлу записать моментальный снимок текущего состояния. </strong></p><p id="506746ce-a977-4f71-aab1-628de3a3f232" class="">То алгоритм работает следующим образом:</p><ul id="e778c286-de7d-4115-a67f-7213c216e569" class="bulleted-list"><li style="list-style-type:disc">Узел, который инициирует протокол, записывает свое состояние, а затем отправляет сообщение-маркер всем исходящим каналам. Важно отметить, что маркер отправляется после того, как узел запишет свое состояние, и до отправки любых дальнейших сообщений каналам.</li></ul><ul id="da42a8e2-0840-4d37-93ed-722da8fb9bb1" class="bulleted-list"><li style="list-style-type:disc">Когда узел получает сообщение о маркере, поведение зависит от того, записал ли узел уже свое состояние (при отправке метки ранее) или нет.<ul id="eb6ffebb-3b14-4601-bbfb-cccadbdbdc7b" class="bulleted-list"><li style="list-style-type:circle">Если узел не записал свое состояние, он записывает свое состояние, а затем записывает состояние канала c, по которому был получен маркер from как пустая последовательность. Затем он отправляет маркер по всем исходящим каналам.</li></ul><ul id="193df552-c912-4698-9aa5-49283cb63cbc" class="bulleted-list"><li style="list-style-type:circle">Если узел записал свое состояние, он записывает состояние канала, с которого был получен маркер, в виде последовательности сообщений, полученных от c после того, как состояние узла было записано, и до того, как узел получил маркер от c.</li></ul></li></ul><p id="d961d69f-481f-49cd-aaca-8ce833ab9cc5" class="">Узел p отправляет токен и сразу после этого инициирует выполнение протокола. В результате он записывает свое состояние s0 и отправляет маркер в канал c. Узел q получает маркер, переходит в состояние s1. Затем он отправляет маркер в канал c&#x27; и переходит в состояние s0. После этого он получает сообщение маркера, записывает свое состояние s0 и состояние канала c в виде пустой последовательности и отправляет сообщение маркера на канал c&#x27;.  Тем временем узел p получил маркер, перешел в состояние s1 и буферизовал маркер в последовательности сообщений, полученных во время выполнения протокола моментального снимка. Затем узел p получает маркер и записывает состояние канала c&#x27; в качестве последовательности [токен]. На этом этапе протокол завершает работу, поскольку состояние всех узлов и каналов было записано, а состояние глобального моментального снимка является следующим:</p><ol type="1" id="9a772ba4-be6a-45a4-9d6a-b1bbee532fb1" class="numbered-list" start="1"><li>моментальный снимок (p): s0</li></ol><ol type="1" id="cd2bfac0-0673-49d8-8a48-868e0d0902c1" class="numbered-list" start="2"><li>моментальный снимок (q): s0</li></ol><ol type="1" id="75a157ba-5833-498d-af26-52e8200c4d78" class="numbered-list" start="3"><li>моментальный снимок (c): []</li></ol><ol type="1" id="7d22e20b-75ca-4771-b630-8890015a1928" class="numbered-list" start="4"><li>моментальный снимок(c&#x27;): [токен]</li></ol><figure id="38d53fec-98c2-453b-a6fa-9d73d1fa97cf" class="image"><a href="12%20%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B8%20%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F%20(distributed%20sn%2063aaac837f4a4ef0a76592a4194a3d60/Untitled%202.png"><img style="width:2000px" src="12%20%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B8%20%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F%20(distributed%20sn%2063aaac837f4a4ef0a76592a4194a3d60/Untitled%202.png"/></a></figure><h1 id="ef9599c1-5321-474d-8e98-0c6c797bf6fe" class="">Физические и логические часы: резюме</h1><ul id="913b7c3a-e8be-4df7-b909-517915d9ddd8" class="bulleted-list"><li style="list-style-type:disc">Разница<ul id="8a4febde-8041-4720-9439-a18629246670" class="bulleted-list"><li style="list-style-type:circle">физическая: измеряется на основе некоторых физических явлений; время непрерывно течет между дискретными значениями</li></ul><ul id="b94ceb0a-fa48-4a0b-aa22-a00ad6ad5bc6" class="bulleted-list"><li style="list-style-type:circle">логическая: не измеряется на основе физических явлений, но узел использует локальные события</li></ul></li></ul><ul id="ed0b185c-0114-4f7e-8b0d-fbc225af3e72" class="bulleted-list"><li style="list-style-type:disc">Сходство:<ul id="ceb42a65-7e84-47d9-9b3f-8f77b18ca789" class="bulleted-list"><li style="list-style-type:circle">В обоих случаях время течет дискретными приращениями каждый раз, когда что-то происходит: (физическое) - лежащее в основе физическое явление, (логическое) фактическое логическое событие, которое происходит в узле.</li></ul><ul id="3e6a1e1e-ff50-44c9-80af-5e79bab9881f" class="bulleted-list"><li style="list-style-type:circle">Связь требуется между узлами для синхронизации их часов: (физическая) связь выполняется в фоновом режиме непрерывно, (логическая) связь выполняется по требованию.</li></ul></li></ul><h1 id="961d37b1-1a28-44bb-b0b5-bb138c6c646b" class="">Рекомендации</h1><ul id="472a21fe-8ca2-4a7f-9ebe-74f60b68d10b" class="bulleted-list"><li style="list-style-type:disc">Физическое время: вся необходимая координация и коммуникация в фоновом режиме; узлы могут устанавливать порядок без дополнительной координации, когда это необходимо. В большинстве случаев физические часы используются для того, чтобы создать иллюзию полного порядка</li></ul><ul id="d03941f0-1cf5-4707-9fd1-200286cb0242" class="bulleted-list"><li style="list-style-type:disc">Логическое время: сетевые разделы заданы, и частичный порядок, удовлетворяющий причинно-следственной связи, является наилучшим видом упорядочения, которого можно достичь в распределенной системе. Во время разделов разные узлы могут продолжать работать, по сути, оставляя свои часы дрейфующими.</li></ul><ul id="841e3103-e886-4af1-b8bd-afbddd87b03a" class="bulleted-list"><li style="list-style-type:disc">Логическое время течет не само по себе, как физическое, оно течет только тогда, когда происходят события. Как следствие, логическое время нельзя использовать для задач, требующих представления о времени на настенных часах, которое течет даже тогда, когда не происходит никаких событий.</li></ul><ul id="d9068bd5-71b9-42cd-a94f-5f95413e6e83" class="bulleted-list"><li style="list-style-type:disc">Идентифицируйте сбой с помощью тайм-аутов и физического времени</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
