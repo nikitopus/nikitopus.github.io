@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Численные методы</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="81838e3b-8cf7-459a-9a2a-ae0c4aad3cbf" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/met_goya_1789.jpg" style="object-position:center 80%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">♥️</span></div><h1 class="page-title">Численные методы</h1><p class="page-description"></p></header><div class="page-body"><h2 id="7f784693-5ade-41be-ae19-3ee516c835c8" class="">1. Общие понятия</h2><figure id="0e15e23c-2e58-462d-8440-24c2f3e9d799" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/1%20%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%B0%200e15e23c2e58462d844024c2f3e9d799.html"><span class="icon">🎠</span>1. Функциональные метрические пространства</a></figure><figure id="4e51d546-56ba-40d8-91a5-b535b970a4e1" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/2%20%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8,%20%D0%BE%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%CC%88%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BD%D0%B0%20%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%80%D0%B0%204e51d54656ba40d891a5b535b970a4e1.html"><span class="icon">🔦</span>2. Функции, определённые на функциональных пространствах. 𝜀-окрестность функции.</a></figure><figure id="fe9b4135-a223-46b9-a394-93b6efa3039b" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/3%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D0%BC%D0%B0%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D0%BA%D0%B8%20fe9b4135a22346b9a39493b6efa3039b.html"><span class="icon">🗝️</span>3. Метод вычислительной математики.</a></figure><figure id="5881de73-06a2-49d4-a132-145af82e6598" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/4%20%D0%94%D0%B2%D0%B0%20%D1%8D%D1%82%D0%B0%D0%BF%D0%B0%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0%205881de7306a249d4a132145af82e6598.html"><span class="icon">🚞</span>4. Два этапа вычислительного процесса</a></figure><figure id="08bb65c5-2662-4992-ae55-be814cd2f381" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/5%20%D0%92%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0%20%D0%97%D0%B0%D0%B4%D0%B0%D1%87%D0%B0%20%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%2008bb65c526624992ae55be814cd2f381.html"><span class="icon">🎯</span>5. Вычислительная задача. Задача идентификации модели. Цель вычислительной задачи.</a></figure><figure id="0dc21fe8-6e91-4c6d-818e-3f74263b308b" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/6%20%D0%9F%D0%BE%D0%B3%D1%80%D0%B5%D1%88%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20%D0%B2%D1%85%D0%BE%D0%B4%D0%BD%D1%8B%D1%85%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20%D0%B8%20%D0%BF%D1%80%D0%B8%D0%B1%D0%BB%D0%B8%D0%B6%D0%B5%CC%88%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%200dc21fe86e914c6d818e3f74263b308b.html"><span class="icon">🎲</span>6. Погрешности входных данных и приближённого решения.</a></figure><figure id="956c88db-72ad-499c-a5c7-adf3c2f86bce" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/7%20%D0%9A%D0%BE%D1%80%D1%80%D0%B5%D0%BA%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20956c88db72ad499ca5c7adf3c2f86bce.html"><span class="icon">👕</span>7. Корректность вычислительной задачи</a></figure><figure id="a0b7cdca-78d6-4879-8da4-78372701c77a" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/8%20%D0%9E%D0%B1%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20a0b7cdca78d648798da478372701c77a.html"><span class="icon">📆</span>8. Обусловленность вычислительной задачи</a></figure><figure id="d92e4baa-cb57-4415-bffb-d08787e88432" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/9%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D1%8B%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2%20d92e4baacb574415bffbd08787e88432.html"><span class="icon">⛱️</span>9. Классы вычислительных методов.</a></figure><figure id="44133740-f66b-4110-848f-13997d2afc9d" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/10%20%D0%9A%D0%BE%D1%80%D1%80%D0%B5%D0%BA%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D0%BE%D0%B2%2044133740f66b4110848f13997d2afc9d.html"><span class="icon">💫</span>10. Корректность вычислительных алгоритмов</a></figure><figure id="789902b2-1849-46fd-8dcb-8876e0346e4f" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/11%20%D0%A7%D1%83%D0%B2%D1%81%D1%82%D0%B2%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D0%BE%D0%B2%20%D0%BA%20%D0%BE%D1%88%20789902b2184946fd8dcb8876e0346e4f.html"><span class="icon">💥</span>11. Чувствительность вычислительных алгоритмов к ошибкам округления</a></figure><figure id="6a3bf05b-7050-4a40-bb4a-6ab7f38b88b3" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/12%20%D0%A2%D1%80%D0%B5%D0%B1%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D0%BA%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%20%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D0%B0%D0%BC%206a3bf05b70504a40bb4a6ab7f38b88b3.html"><span class="icon">💢</span>12. Требования к вычислительным алгоритмам</a></figure><h2 id="e47797c4-8442-4798-bec4-a3d3a81f7790" class="">2. Погрешности</h2><figure id="1b212f3d-6e3e-4a58-bcb2-ba536b590587" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/13%20%D0%98%D1%81%D1%82%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%B8%20%D0%BF%D0%BE%D0%B3%D1%80%D0%B5%D1%88%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D0%BE%D0%B2%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%201b212f3d6e3e4a58bcb2ba536b590587.html"><span class="icon">🦴</span>13. Источники погрешности результатов вычислений</a></figure><figure id="e799f0aa-7eb1-4e98-9214-ea8e651943e0" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/14%20%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0%20%D0%BE%D0%BA%D1%80%D1%83%D0%B3%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%D1%87%D0%B8%D1%81%D0%B5%D0%BB%20e799f0aa7eb14e989214ea8e651943e0.html"><span class="icon">🧑🏿‍🎓</span>14. Правила округления чисел</a></figure><figure id="22bca1d7-290a-46bb-9c48-b08d9991c35c" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/15%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BF%D0%BE%D0%B3%D1%80%D0%B5%D1%88%D0%BD%D0%BE%D1%81%D1%82%D0%B5%D0%B8%CC%86%2022bca1d7290a46bb9c48b08d9991c35c.html"><span class="icon">🐵</span>15. Классификация погрешностей</a></figure><figure id="ee96eeb7-0953-47a0-a61f-218fe86bfafd" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/16%20%D0%9D%D0%B5%D1%83%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D0%BC%D0%B0%D1%8F%20%D0%BF%D0%BE%D0%B3%D1%80%D0%B5%D1%88%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%90%D0%B1%D1%81%D0%BE%D0%BB%D1%8E%D1%82%D0%BD%D0%B0%D1%8F%20%D0%B8%20%D0%BE%D1%82%D0%BD%D0%BE%D1%81%D0%B8%D1%82%D0%B5%D0%BB%20ee96eeb7095347a0a61f218fe86bfafd.html"><span class="icon">🐇</span>16. Неустранимая погрешность. Абсолютная и относительная погрешности числа</a></figure><figure id="77850282-1865-4de3-a0cd-8a1010407553" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/17%20%D0%92%D0%B5%D1%80%D0%BD%D1%8B%D0%B5%20%D0%B7%D0%BD%D0%B0%D0%BA%D0%B8%20%D1%87%D0%B8%D1%81%D0%BB%D0%B0%207785028218654de3a0cd8a1010407553.html"><span class="icon">🙋🏿‍♂️</span>17. Верные знаки числа</a></figure><figure id="4b5b26a6-a510-4d03-87b8-cc1f52ad54a8" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/18%20%D0%9F%D0%BE%D0%BB%D0%BD%D0%B0%D1%8F%20%D0%BF%D0%BE%D0%B3%D1%80%D0%B5%D1%88%D0%BD%D0%BE%D1%81%D1%82%D1%8C%204b5b26a6a5104d0387b8cc1f52ad54a8.html"><span class="icon">👅</span>18. Полная погрешность</a></figure><figure id="f3ec76fd-3bcc-4f87-a2bf-16bf46d732ac" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/19%20%D0%9E%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20%D0%BC%D0%B0%D1%88%D0%B8%D0%BD%D0%BD%D0%BE%D0%B8%CC%86%20%D0%B0%D1%80%D0%B8%D1%84%D0%BC%D0%B5%D1%82%D0%B8%D0%BA%D0%B8%20f3ec76fd3bcc4f87a2bf16bf46d732ac.html"><span class="icon">🍊</span>19. Особенности машинной арифметики</a></figure><h2 id="7cd54395-79ea-4161-8267-73b20dfefa86" class="">3. Теория интерполирования</h2><figure id="bf2fa566-781c-4c8f-9a8f-dc1e87a49ee0" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/20%20%D0%9F%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20bf2fa566781c4c8f9a8fdc1e87a49ee0.html"><span class="icon">🧑🏾‍🎨</span>20. Постановка задачи</a></figure><figure id="ce35242a-af61-4d40-af95-f9a39df5cd83" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/21%20%D0%9B%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%BD%D0%BE%D0%B6%D0%B5%D1%81%D1%82%D0%B2%D0%B0%20ce35242aaf614d40af95f9a39df5cd83.html"><span class="icon">🧘🏾‍♂️</span>21. Линейные множества</a></figure><figure id="61e3a9ef-3831-4482-a498-a2b7e5d712fb" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/22%20%D0%97%D0%B0%D0%B4%D0%B0%D1%87%D0%B0%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%2061e3a9ef38314482a498a2b7e5d712fb.html"><span class="icon">🦛</span>22. Задача интерполирования</a></figure><figure id="8c737f44-eb9e-49ff-9772-8c354cbd71d1" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/23%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%80%D1%83%D1%8E%D1%89%D0%B5%D0%B8%CC%86%20%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8%208c737f44eb9e49ff97728c354cbd71d1.html"><span class="icon">👳🏾</span>23. Построение интерполирующей функции</a></figure><figure id="0442807f-5267-4483-817f-5ab6d2009ff5" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/24%20%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B%20%D1%82%D0%B5%D0%BE%D1%80%D0%B8%D0%B8%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%200442807f52674483817f5ab6d2009ff5.html"><span class="icon">🐚</span>24. Основные вопросы теории интерполирования</a></figure><figure id="a8c1e75a-a0bd-410f-9a62-a220c688024f" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/25%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D1%8F%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE%D1%87%D0%BB%D0%B5%D0%BD%D0%B0%20%D0%9B%D0%B0%D0%B3%D1%80%D0%B0%D0%BD%D0%B6%20a8c1e75aa0bd410f9a62a220c688024f.html"><span class="icon">🪺</span>25. Построение интерполяционного многочлена Лагранжа</a></figure><figure id="0ec88f8b-7a00-4981-9926-3e7f3f7b8c7f" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/26%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D1%8F%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B8%CC%86%20%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE%D1%87%D0%BB%D0%B5%D0%BD%20%D0%9B%D0%B0%D0%B3%D1%80%D0%B0%D0%BD%D0%B6%D0%B0%20%D0%B4%D0%BB%D1%8F%20%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D0%BE%200ec88f8b7a00498199263e7f3f7b8c7f.html"><span class="icon">🐺</span>26. Интерполяционный многочлен Лагранжа для равноотстоящих узлов</a></figure><figure id="accfd4ec-6131-4aea-8471-5e144d727d45" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/27%20%D0%9E%D1%81%D1%82%D0%B0%D1%82%D0%BE%D1%87%D0%BD%D1%8B%D0%B8%CC%86%20%D1%87%D0%BB%D0%B5%D0%BD%20%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D1%8B%20%D0%9B%D0%B0%D0%B3%D1%80%D0%B0%D0%BD%D0%B6%D0%B0%20%D0%B8%20%D0%B5%D0%B3%D0%BE%20%D0%BE%D1%86%D0%B5%D0%BD%D0%BA%D0%B8%20accfd4ec61314aea84715e144d727d45.html"><span class="icon">🧐</span>27. Остаточный член формулы Лагранжа и его оценки</a></figure><figure id="6d4b8162-0099-4eb9-a951-e0a31d0a1aa5" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/28%20%D0%92%D1%8B%D0%B1%D0%BE%D1%80%20%D1%83%D0%B7%D0%BB%D0%BE%D0%B2%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D0%9C%D0%BD%D0%BE%D0%B3%D0%BE%D1%87%D0%BB%D0%B5%D0%BD%20%D0%A7%D0%B5%D0%B1%D1%8B%D1%88%D0%B5%CC%88%D0%B2%206d4b816200994eb9a951e0a31d0a1aa5.html"><span class="icon">🫢</span>28. Выбор узлов интерполирования. Многочлен Чебышёва</a></figure><figure id="8b4f6bea-432a-4647-8861-4c62257ba4e1" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/29%20%D0%9E%D0%B1%D1%80%D0%B0%D1%82%D0%BD%D0%BE%D0%B5%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%208b4f6bea432a464788614c62257ba4e1.html"><span class="icon">🌺</span>29. Обратное интерполирование</a></figure><h2 id="06c9f193-6127-4a50-9b4c-0c5c7103818a" class="">4. Численное интегрирование</h2><figure id="00516906-c36d-482e-85a6-380a38e78014" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/30%20%D0%97%D0%B0%D0%B4%D0%B0%D1%87%D0%B0%20%D1%87%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B8%D0%BD%D1%82%D0%B5%D0%B3%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%2000516906c36d482e85a6380a38e78014.html"><span class="icon">💣</span>30. Задача численного интегрирования</a></figure><figure id="e8a595c3-f2db-4448-92cc-7489eba586a3" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/31%20%D0%92%D1%8B%D0%B2%D0%BE%D0%B4%20%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%20%D0%9D%D1%8C%D1%8E%D1%82%D0%BE%D0%BD%D0%B0%20%E2%80%93%20%D0%9A%D0%BE%D1%82%D0%B5%D1%81%D0%B0%20e8a595c3f2db444892cc7489eba586a3.html"><span class="icon">😀</span>31. Вывод формул Ньютона – Котеса</a></figure><figure id="d91bc398-f292-43c1-af26-d0b74fd0f320" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/32%20%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B0%20%D1%82%D1%80%D0%B0%D0%BF%D0%B5%D1%86%D0%B8%D0%B8%CC%86%20%D0%B8%20%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B0%20%D0%A1%D0%B8%D0%BC%D0%BF%D1%81%D0%BE%D0%BD%D0%B0%20d91bc398f29243c1af26d0b74fd0f320.html"><span class="icon">🫥</span>32. Формула трапеций и формула Симпсона</a></figure><figure id="8bd4407c-6ad0-4d7c-a9b0-556001076b68" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/33%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%B2%D1%8B%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B5%D0%B8%CC%86%20%D0%BD%D0%B5%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D0%B8%D0%BD%D1%82%208bd4407c6ad04d7ca9b0556001076b68.html"><span class="icon">😍</span>33. Метод выделения особенностей несобственных интегралов</a></figure><figure id="1a6f456c-6be6-4c0c-bb1f-f1fbcc080fe5" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/34%20%D0%A3%D1%87%D0%B5%CC%88%D1%82%20%D1%85%D0%B0%D1%80%D0%B0%D0%BA%D1%82%D0%B5%D1%80%D0%B0%20%D0%BF%D0%BE%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BF%D0%BE%D0%B4%D1%8B%D0%BD%D1%82%D0%B5%D0%B3%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%84%D1%83%D0%BD%D0%BA%201a6f456c6be64c0cbb1ff1fbcc080fe5.html"><span class="icon">🤫</span>34. Учёт характера поведения подынтегральной функции вблизи особенности</a></figure><figure id="a1b5d99b-ee18-4f4f-a56f-8c9c89fc7392" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/35%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%BF%D0%BE%D0%B2%D1%82%D0%BE%D1%80%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BA%D0%B2%D0%B0%D0%B4%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%BD%D1%8B%D1%85%20%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%20a1b5d99bee184f4fa56f8c9c89fc7392.html"><span class="icon">😊</span>35. Метод повторного применения квадратурных формул приближённого вычисление кратных интегралов.</a></figure><h2 id="47a077a8-b070-4b84-8f30-83495881f01f" class="">5. Системы уравнений</h2><figure id="98f02899-d61b-46c6-9ec2-65348d59ae31" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/36%20%D0%9E%D0%B1%D1%89%D0%B8%D0%B5%20%D0%BF%D0%BE%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%2098f02899d61b46c69ec265348d59ae31.html"><span class="icon">👣</span>36. Общие понятия</a></figure><figure id="920ba98d-19d7-4668-b4a8-aa700a06c19d" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/37%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%93%D0%B0%D1%83%D1%81%D1%81%D0%B0%20920ba98d19d74668b4a8aa700a06c19d.html"><span class="icon">🦬</span>37. Метод Гаусса</a></figure><figure id="5f3428c4-1a4f-4390-9f4c-7147dfda174c" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/38%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%BF%D1%80%D0%BE%D0%B3%D0%BE%D0%BD%D0%BA%D0%B8%205f3428c41a4f43909f4c7147dfda174c.html"><span class="icon">😶‍🌫️</span>38. Метод прогонки</a></figure><figure id="a55e8a19-e1c1-4fa9-ac9f-b45380a6b21d" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/39%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8%CC%86%20%D0%B4%D0%BB%D1%8F%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D1%8B%D1%85%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%20a55e8a19e1c14fa9ac9fb45380a6b21d.html"><span class="icon">🖕</span>39. Метод итераций для решения линейных систем</a></figure><figure id="dccd7047-1bfe-4860-816b-329154559040" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/40%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%97%D0%B5%D0%B8%CC%86%D0%B4%D0%B5%D0%BB%D1%8F%20dccd70471bfe4860816b329154559040.html"><span class="icon">🤮</span>40. Метод Зейделя</a></figure><h2 id="cdf44e68-26da-4427-9b4e-36227cc9ebeb" class="">6. Решение ОДУ</h2><figure id="30faf4b3-66f4-4ff8-950a-688c93a5d5ee" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/41%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%9A%D0%BE%D1%88%D0%B8%2030faf4b366f44ff8950a688c93a5d5ee.html"><span class="icon">📈</span>41. Методы решения задачи Коши</a></figure><figure id="d9c3bf22-6a90-4395-8da0-078c2eb909d0" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/42%20%D0%9F%D0%BE%D1%88%D0%B0%D0%B3%D0%BE%D0%B2%D1%8B%D0%B8%CC%86%20%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%B0%20%D1%80%D1%8F%D0%B4%D0%BE%D0%B2%20d9c3bf226a9043958da0078c2eb909d0.html"><span class="icon">🪢</span>42. Пошаговый вариант метода рядов</a></figure><figure id="bbc3dd9b-d4a4-46bf-aff0-5ddeaba5d03c" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/43%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D1%80%D1%8F%D0%B4%D0%BE%D0%B2,%20%D0%BD%D0%B5%20%D1%82%D1%80%D0%B5%D0%B1%D1%83%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D0%BD%20bbc3dd9bd4a446bfaff05ddeaba5d03c.html"><span class="icon">🪚</span>43. Метод рядов, не требующий вычисления производных правой части уравнения</a></figure><figure id="a71260d6-1ccd-4975-8c11-fa2206bc20b9" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/44%20%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%B0%D1%8F%20%D0%B8%D0%B4%D0%B5%D1%8F%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%B0%20%D0%A0%D1%83%D0%BD%D0%B3%D0%B5%E2%80%93%D0%9A%D1%83%D1%82%D1%82%D0%B0%20a71260d61ccd49758c11fa2206bc20b9.html"><span class="icon">♟️</span>44. Основная идея метода Рунге–Кутта</a></figure><figure id="d91fdfd1-0d91-4f62-a90a-9f3369658bea" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/45%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%A0%D1%83%D0%BD%D0%B3%D0%B5%E2%80%93%D0%9A%D1%83%D1%82%D1%82%D0%B0%20%D0%BF%D0%B5%D1%80%D0%B2%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%BA%D0%B0%20%D1%82%D0%BE%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20d91fdfd10d914f62a90a9f3369658bea.html"><span class="icon">🕠</span>45. Метод Рунге–Кутта первого порядка точности</a></figure><figure id="a453fc1e-ed5b-455c-aa1d-b1009705b3f6" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/46%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%A0%D1%83%D0%BD%D0%B3%D0%B5%E2%80%93%D0%9A%D1%83%D1%82%D1%82%D0%B0%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%BA%D0%B0%20%D1%82%D0%BE%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20a453fc1eed5b455caa1db1009705b3f6.html"><span class="icon">📱</span>46. Метод Рунге–Кутта второго порядка точности</a></figure><figure id="f783e193-5fcf-42b9-92d6-f9ac19ae464e" class="link-to-page"><a href="%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%2081838e3b8cf7459a9a2aae0c4aad3cbf/47%20%D0%9C%D0%BD%D0%BE%D0%B3%D0%BE%D1%88%D0%B0%D0%B3%D0%BE%D0%B2%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%20f783e1935fcf42b992d6f9ac19ae464e.html"><span class="icon">🛻</span>47. Многошаговые методы</a></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,685 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>1. Случайные события. Алгебры, сигма-алгебры событий.</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="5957a4fd-2f1f-4839-9a4b-5b4a4fb9964a" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">😀</span></div><h1 class="page-title">1. Случайные события. Алгебры, сигма-алгебры событий.</h1><p class="page-description"></p></header><div class="page-body"><h3 id="c2a5b6fd-c887-4282-9ae6-194d02d2538c" class=""><mark class="highlight-red">Случайные события</mark></h3><p id="92bcb710-5cb5-444e-9d15-f50b65433138" class="">Пусть проводится некоторый опыт, в результате которого может произойти одно из <mark class="highlight-default">элементарных событий</mark>. </p><p id="39259870-a559-44c9-a53e-80367313ab9e" class=""><mark class="highlight-red">Определение. </mark><mark class="highlight-default"><strong><span style="border-bottom:0.05em solid">Элементарное событие</span></strong></mark> - события (исходы), которые нельзя разделить на «составные части», также являющиеся событиями. Объединение элементарных событий образует <strong><span style="border-bottom:0.05em solid">пространство (множество) элементарных событий</span></strong> (Ω).</p><ul id="65c9f523-0024-4047-a92a-58afe282ddbd" class="toggle"><li><details open=""><summary>Примеры</summary><p id="a6cd74ad-0d77-445b-ba03-54c2c39f9a26" class=""><em><strong><span style="border-bottom:0.05em solid">Пример 1.1.1.</span></strong></em> Пусть проводится эксперимент, в котором подкидываются 2 кубика. Тогда</p><figure id="78aa6757-8388-49cf-b882-bccdfe0303e6" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>=</mo><mo stretchy="false">{</mo><mo stretchy="false">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>:</mo><msub><mi>a</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mn>6</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\Omega =\{(a_1, a_2):a_i=1,...,6\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">6</span><span class="mclose">}</span></span></span></span></span></div></figure><p id="f31bad7a-d4d0-4885-9b7c-9266cfff6943" class="">где <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">a_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> — число очков, выпавших на i-м кубике. В этом случае мощность множества Ω конечна и равна 36.</p><p id="f9a7ff5b-3928-47dc-bb6a-98270d836748" class=""><em><strong><span style="border-bottom:0.05em solid">Пример 1.1.2.</span></strong></em><strong> </strong>Проведем другой статистический эксперимент, в котором человек приходит на остановку и ждет прихода автобуса. Предположим, что автобус гарантированно приходит в промежутке времени [0, T ]. Тогда моменты времени, когда приедет<br/>автобус, образуют множество элементарных исходов Ω = [0, T ]. В этом случае Ω более чем счетно, т. е. множество Ω имеет мощность континуум.<br/></p><p id="ebe44e02-7eb2-4184-b7b7-5dc71bffc532" class="">Если в примере 1.1.1 нас интересует событие, которое заключается в том, что на обеих гранях выпадает четное число очков, тогда событие A можно описать следующим образом:<br/>{(2k, 2l) : k, l = 1, 2, 3}. Если в примере 1.1.2 наложить условие, что время ожидания автобуса не превышает 15 минут, тогда событие B представляет собой отрезок [0, 15].<br/>События A и B не являются элементарными. Любое событие — совокупность элементарных событий, т. е. любое событие A ⊂ Ω.<br/></p><p id="ddcfe06c-1988-4c08-bcf7-559eb04e6025" class="">
+</p></details></li></ul><p id="6984719c-6b2e-4f08-88b5-6aff6e749a94" class=""><span style="border-bottom:0.05em solid">Событие </span><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span><span style="border-bottom:0.05em solid"> произошло</span> в том и только в том случае, если <span style="border-bottom:0.05em solid">произошло элементарное событие</span> <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\omega \in A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span>.<br/>Событие, заключающееся в том, что происходит хотя бы одно из событий A или B, обозначим через <br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mo stretchy="false">{</mo><mi>ω</mi><mo>:</mo><mi>ω</mi><mo>∈</mo><mi>A</mi><mtext> или </mtext><mi>ω</mi><mo>∈</mo><mi>B</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">A \cup B = \{ \omega: \omega\in A  \ или \ \omega\in B\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">A</span><span class="mspace"> </span><span class="mord cyrillic_fallback">или</span><span class="mspace"> </span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span> (см. рис. 1.1). </p><p id="48c008bf-1133-42f5-9d48-4a2785f917ca" class="">Событие, которое происходит, когда происходят одновременно и событие A, и событие B, обозначим через <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mo stretchy="false">{</mo><mi>ω</mi><mo>:</mo><mi>ω</mi><mo>∈</mo><mi>A</mi><mtext> и </mtext><mi>ω</mi><mo>∈</mo><mi>B</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">A\cap B=\{\omega:\omega\in A \ и\ \omega\in B\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">A</span><span class="mspace"> </span><span class="mord cyrillic_fallback">и</span><span class="mspace"> </span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span>.</p><figure id="93642f2a-577a-47b8-af5b-4d3074ff7c68" class="image"><a href="1%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D1%8F%20%D0%90%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B,%20%D1%81%D0%B8%D0%B3%D0%BC%D0%B0-%D0%B0%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%205957a4fd2f1f48399a4b5b4a4fb9964a/Untitled.png"><img style="width:624px" src="1%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D1%8F%20%D0%90%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B,%20%D1%81%D0%B8%D0%B3%D0%BC%D0%B0-%D0%B0%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%205957a4fd2f1f48399a4b5b4a4fb9964a/Untitled.png"/></a></figure><p id="5220248f-76ce-4ee8-a6e9-aeb1b49985b7" class=""><mark class="highlight-red">Определение. </mark>Если <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi mathvariant="normal">∅</mi></mrow><annotation encoding="application/x-tex">A\cap B = \varnothing</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6633em;vertical-align:-0.0817em;"></span><span class="mord amsrm">∅</span></span></span></span></span><span>﻿</span></span>, то события <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span> и <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span><span>﻿</span></span> называют <strong><span style="border-bottom:0.05em solid">несовместными</span></strong>. Пустое множество ∅ в теории вероятностей принято называть <strong><span style="border-bottom:0.05em solid">невозможным событием</span></strong>, а множество <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span> — <strong><span style="border-bottom:0.05em solid">достоверным событием</span></strong>.</p><p id="a6c351ca-9e8c-46a5-8074-325c180bec72" class=""><br/>Обозначим через <br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>A</mi><mo>ˉ</mo></mover><mo>=</mo><mi mathvariant="normal">Ω</mi><mi mathvariant="normal">\</mi><mi>A</mi><mo>=</mo><mo stretchy="false">{</mo><mi>ω</mi><mo>:</mo><mi>ω</mi><mo mathvariant="normal">∉</mo><mi>A</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\bar A = \Omega \backslash A=\{\omega:\omega\notin A \}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8201em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8201em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">A</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1111em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Ω\</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mord"><span class="mrel">∈</span></span><span class="mord vbox"><span class="thinbox"><span class="llap"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="inner"><span class="mord"><span class="mord">/</span><span class="mspace" style="margin-right:0.0556em;"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span> <strong><span style="border-bottom:0.05em solid">дополнение</span></strong> события <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span>. События <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span> и <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>A</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8201em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8201em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">A</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1111em;"><span class="mord">ˉ</span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> — несовместные события, т. е. <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∩</mo><mover accent="true"><mi>A</mi><mo>ˉ</mo></mover><mo>=</mo><mi mathvariant="normal">∅</mi></mrow><annotation encoding="application/x-tex">A\cap \bar A =\varnothing</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8201em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8201em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">A</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1111em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6633em;vertical-align:-0.0817em;"></span><span class="mord amsrm">∅</span></span></span></span></span><span>﻿</span></span>. Также верны следующие равенства:</p><figure id="4e4a16b6-bd78-4f2d-b0c5-a82e61d7c5b9" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mo>=</mo><mover accent="true"><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><mo stretchy="true">‾</mo></mover><mo>=</mo><mi mathvariant="normal">Ω</mi><mi mathvariant="normal">\</mi><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><mspace linebreak="newline"></mspace><mi>A</mi><mtext> </mtext><mo>∪</mo><mtext> </mtext><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><mo>=</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">A=\overline{\overline {A}} = \Omega \backslash \overline A \\ A\ \cup \ \overline A =\Omega </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0833em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.0833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span><span style="top:-4.0033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1333em;vertical-align:-0.25em;"></span><span class="mord">Ω\</span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8833em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span></div></figure><p id="d093f442-56a5-4026-861f-98799f3c0ea7" class="">Через <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi mathvariant="normal">\</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">A \backslash B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mord">\</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span><span>﻿</span></span> обозначим множество точек из множества <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\Omega </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span>, принадлежащих <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span>, но не принадлежащих <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span><span>﻿</span></span>,  т. е. <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi mathvariant="normal">\</mi><mi>A</mi><mo>=</mo><mo stretchy="false">{</mo><mi>ω</mi><mo>:</mo><mi>ω</mi><mo>∈</mo><mi>A</mi><mtext> и </mtext><mi>ω</mi><mo mathvariant="normal">∉</mo><mi>B</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">B\backslash A =\{\omega : \omega\in A \ и \ \omega\notin B\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord">\</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mspace"> </span><span class="mord cyrillic_fallback">и</span><span class="mspace"> </span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mord"><span class="mrel">∈</span></span><span class="mord vbox"><span class="thinbox"><span class="llap"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="inner"><span class="mord"><span class="mord">/</span><span class="mspace" style="margin-right:0.0556em;"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span></p><h3 id="2ddae6ee-8a7f-491b-925f-aa1f45b185d9" class=""><mark class="highlight-red">Алгебра, сигма-алгебра событий</mark></h3><p id="67aee4da-18f9-45c1-aa73-74a7e70df079" class="">Рассмотрим множества <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>A</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">A_1, ..., A_m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> такие, что:<div class="indented"><ol type="1" id="4f2b20fd-9235-462e-ae60-dfbf4fcf1d41" class="numbered-list" start="1"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>i</mi></msub><mtext> </mtext><mo>∩</mo><mtext> </mtext><msub><mi>A</mi><mi>j</mi></msub><mo>=</mo><mi mathvariant="normal">∅</mi><mo separator="true">,</mo><mi>i</mi><mo mathvariant="normal">≠</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">A_i \ \cap \ A_j =\varnothing , i\ne j </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∩</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord amsrm">∅</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span></span><span>﻿</span></span></li></ol><ol type="1" id="9e9074dc-dbb4-4c8d-b35f-7045b94d25a2" class="numbered-list" start="2"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mtext> </mtext><mo>∪</mo><mtext> </mtext><msub><mi>A</mi><mn>2</mn></msub><mtext> </mtext><mo>∪</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mtext> </mtext><mo>∪</mo><mtext> </mtext><msub><mi>A</mi><mi>m</mi></msub><mo>=</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">A_1 \ \cup \ A_2 \ \cup .... \ \cup \ A_m =\Omega </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.5556em;"></span><span class="mord">....</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span></li></ol></div></p><p id="1a77a9aa-56f6-4aac-98ad-7851874deff4" class=""><mark class="highlight-red">Определение.</mark> Система множеств <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><msub><mi>A</mi><mi>i</mi></msub><msubsup><mo stretchy="false">}</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup></mrow><annotation encoding="application/x-tex">\{A_i\}^m_{i=1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0087em;vertical-align:-0.2587em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">}</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-2.4413em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2587em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>, удовлетворяющая этим двум условиям, называется <strong><span style="border-bottom:0.05em solid">разбиением множества</span></strong> <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span> или <strong><span style="border-bottom:0.05em solid">полной группой событий</span></strong>.</p><p id="ac809d3b-759f-4d92-bf2e-d11f7ce514d7" class=""><mark class="highlight-red">Определение. </mark>Совокупность <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\mathcal{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span> подмножеств множества <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span> называется <strong><span style="border-bottom:0.05em solid">алгеброй</span></strong>, если:<div class="indented"><ol type="1" id="ab53e837-6cef-46e0-a282-b9d5c3faccd4" class="numbered-list" start="1"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>⊂</mo><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\Omega \subset \mathcal{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">Ω</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span></li></ol><ol type="1" id="e57e6334-7adc-4221-a4b2-5d9d80a064eb" class="numbered-list" start="2"><li>Если <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">A \in \mathcal{A} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span> и <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">B \in \mathcal{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span>, то и <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mtext> </mtext><mo>∪</mo><mtext> </mtext><mi>B</mi><mo>∈</mo><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">A \ \cup \  B \in \mathcal{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span></li></ol><ol type="1" id="486a3817-7703-4dc0-9d00-22c9d3dd5681" class="numbered-list" start="3"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>A</mi><mo>:</mo><mtext> если </mtext><mi>A</mi><mo>∈</mo><mi mathvariant="script">A</mi><mo separator="true">,</mo><mtext> то </mtext><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><mo>=</mo><mi mathvariant="normal">Ω</mi><mi mathvariant="normal">\</mi><mi>A</mi><mo>∈</mo><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\forall A: \ если \ A \in \mathcal{A}, \ то \ \overline{A} = \Omega \backslash A \in \mathcal{A} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cyrillic_fallback">если</span><span class="mspace"> </span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0778em;vertical-align:-0.1944em;"></span><span class="mord mathcal">A</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cyrillic_fallback">то</span><span class="mspace"> </span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Ω\</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span> </li></ol></div></p><p id="1f5cc591-8f1c-43c6-9562-4f59f2c40752" class="">Множества, входящие в алгебру <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\mathcal{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span></span><span>﻿</span></span> - <strong><span style="border-bottom:0.05em solid">события</span></strong>. </p><ul id="4b119ad1-3b22-454e-94c4-eb7e3ef59264" class="toggle"><li><details open=""><summary>Примеры алгебр</summary><ol type="1" id="703e9812-fe48-45de-ba7b-1d539fecab41" class="numbered-list" start="1"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">A</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false">{</mo><mi mathvariant="normal">∅</mi><mo separator="true">,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\mathcal{A}_0=\{\varnothing, \Omega\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord amsrm">∅</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">Ω</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span></li></ol><ol type="1" id="7cf9c9cd-8a05-4648-943b-da510a077ea4" class="numbered-list" start="2"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">A</mi><mn>1</mn></msub><mo>=</mo><msup><mn>2</mn><mi mathvariant="normal">Ω</mi></msup><mo>=</mo><mo stretchy="false">{</mo><mi>A</mi><mo>:</mo><mi>A</mi><mo>⊂</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\mathcal{A}_1 = 2^\Omega =\{A: A\subset \Omega \} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">Ω</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Ω</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span> - алгебра, содержащая всевозможные подмножества</li></ol><ol type="1" id="f7745fcf-4c49-4c70-adfa-8e6d31a8a2de" class="numbered-list" start="3"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">A</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false">{</mo><mi>A</mi><mo separator="true">,</mo><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><mo separator="true">,</mo><mi mathvariant="normal">∅</mi><mo separator="true">,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\mathcal{A}_2 = \{A, \overline A, \varnothing, \Omega\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1333em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord amsrm">∅</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">Ω</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span>, где <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>⊂</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">A\subset \Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span></li></ol></details></li></ul><figure id="82464250-2abd-4d9a-9fc2-1182af5e5b5c" class="image"><a href="1%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D1%8F%20%D0%90%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B,%20%D1%81%D0%B8%D0%B3%D0%BC%D0%B0-%D0%B0%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%205957a4fd2f1f48399a4b5b4a4fb9964a/Untitled%201.png"><img style="width:1044px" src="1%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D1%8F%20%D0%90%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B,%20%D1%81%D0%B8%D0%B3%D0%BC%D0%B0-%D0%B0%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D1%8B%20%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%205957a4fd2f1f48399a4b5b4a4fb9964a/Untitled%201.png"/></a></figure><p id="218f9cac-42bd-4e24-92ba-39c705a9d33d" class=""><mark class="highlight-red">Определение. </mark><strong><span style="border-bottom:0.05em solid">Алгебра, порожденная множеством</span></strong> <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>⊂</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">B\subset \Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span>, называется система подмножеств <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>B</mi><mo separator="true">,</mo><mover accent="true"><mi>B</mi><mo stretchy="true">‾</mo></mover><mo separator="true">,</mo><mi mathvariant="normal">∅</mi><mo separator="true">,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\alpha (B) = \{B, \overline B, \varnothing, \Omega\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1333em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord amsrm">∅</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">Ω</span><span class="mclose">}</span></span></span></span></span><span>﻿</span></span></p><p id="15c7963f-d87a-435a-8af7-d8466827f8f4" class=""><mark class="highlight-red">Определение. </mark>Алгебра <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">F</mi></mrow><annotation encoding="application/x-tex">\mathcal F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.09931em;">F</span></span></span></span></span><span>﻿</span></span> подмножества множества <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span></span><span>﻿</span></span> называется<strong><span style="border-bottom:0.05em solid"> </span></strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span></span><span>﻿</span></span><strong><span style="border-bottom:0.05em solid">-алгеброй</span></strong>, если она замкнута относительно объединения счетной совокупности множеств, т.е. если <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><msub><mi>A</mi><mi>n</mi></msub><msubsup><mo stretchy="false">}</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi mathvariant="normal">∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\{A_n\}_{n=1}^\infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">}</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-2.4519em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2481em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> - последовательность событий, где для любого <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span><span>﻿</span></span> событие <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>n</mi></msub><mo>∈</mo><mi mathvariant="script">F</mi></mrow><annotation encoding="application/x-tex">A_n \in \mathcal F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.09931em;">F</span></span></span></span></span><span>﻿</span></span>, тогда <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∪</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi mathvariant="normal">∞</mi></msubsup><msub><mi>A</mi><mi>n</mi></msub><mo>∈</mo><mi mathvariant="script">F</mi></mrow><annotation encoding="application/x-tex">\cup _{n=1}^\infty A_n \in \mathcal F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9314em;vertical-align:-0.2481em;"></span><span class="mord"><span class="mbin">∪</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-2.4519em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2481em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.09931em;">F</span></span></span></span></span><span>﻿</span></span>.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

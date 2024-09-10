@@ -1,0 +1,685 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Список определений</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="ce6bf99a-cff5-420c-abee-4fae9cea3b0d" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">⭐</span></div><h1 class="page-title">Список определений</h1><p class="page-description"></p></header><div class="page-body"><h3 id="ad871e69-94f4-4bd5-88de-0b34ad2eca06" class=""><mark class="highlight-red">2. Метрические пространства</mark></h3><p id="87045aaf-cfc9-4d06-8892-2350f58950e1" class="">Метрическое пространство<br/>Метрика<br/>Аксиомы метрики (3 шт)<br/>Шар (открытый, замкнутый, сфера)<br/>Внутренняя точка<br/>Внешняя точка<br/>Граничная точка<br/>Изолированная точка<br/>Предельная точка<br/>Открытое множество<br/>Замкнутое множество<br/>Свойства открытых и замкнутых множеств (4 шт)<br/></p><h3 id="cab74ecc-daea-4471-b731-8b78630f8cc2" class=""><mark class="highlight-red">3. Сходимость в метрических пространствах</mark></h3><p id="ab865c67-cd4e-4be7-ae53-9991a5b8d662" class="">Последовательность<br/>Подпоследовательность<br/>Предел последовательности<br/>Свойства последовательностей (2 шт)<br/>Замыкание<br/>Свойства замыканий (3 шт)<br/></p><h3 id="763a8920-4430-4a41-ba44-466022411f70" class=""><mark class="highlight-red">4. Полные метрические пространства</mark></h3><p id="50261c0c-6c70-4c5f-aa48-a6898d91b477" class="">Фундаментальная последовательность<br/>Ограниченное множество<br/>Полное метрическое пространство<br/></p><h3 id="abc610d3-25f4-4376-b04d-34157b6d65a8" class=""><mark class="highlight-red">5. Сепарабельные пространства</mark></h3><p id="8c398e9e-71b4-4677-b4af-36a69f55976e" class="">Плотное множество<br/>Неплотное множество<br/>Всюду плотное множество<br/>Нигде не плотное множество<br/>Сепарабельное метрическое пространство<br/></p><h3 id="9dbebbf7-8488-4a4a-82be-493ee3a2f20b" class=""><mark class="highlight-red">6. Вполне ограниченные множества</mark></h3><p id="b3604d5a-ea1a-4a74-9b02-7ad23ca5deeb" class="">Эпсилон-сеть<br/>Вполне ограниченное множество<br/>Компактное множество<br/>Компактное в себе множество (компакт)<br/>Расстояние между точкой и множеством<br/>Расстояние между множествами<br/>Диаметр множества<br/></p><h3 id="b833e4d5-591d-4669-bf68-4d00bb293186" class=""><mark class="highlight-red">7. Необходимые и достаточные условия компактности</mark></h3><h3 id="b82caf03-9df1-4b78-a555-d00a7c7834b9" class=""><mark class="highlight-red">8. Открытые покрытия метрических пространств</mark></h3><p id="d6d52801-f53c-43f0-af0d-a0deee030f34" class="">Открытое покрытие пространства<br/>Счетная база пространства<br/>Теорема Гейне-Бореля-Лебега<br/></p><h3 id="38f1edef-b968-4acf-b91d-690290e71d73" class=""><mark class="highlight-red">9. Непрерывные операторы в метрических пространствах</mark></h3><p id="bf6acc06-ae82-47b3-b473-7b1ecdb7a0db" class="">Оператор<br/>Непрерывность оператора по Коши, по Гейне<br/>Ограниченный оператор<br/>Первая и вторая теорема Вейерштрасса<br/>Равномерная непрерывность оператора<br/>Теорема Кантора<br/></p><h3 id="a5fd4841-a4e8-4eae-98ef-c11b4385cf5c" class=""><mark class="highlight-red">10. Оператор сжатия. Теорема Банаха</mark></h3><p id="0cb39cc8-ba66-43d5-bb2c-79a526a40cb8" class="">Неподвижная точка оператора<br/>Оператор сжатия<br/>Теорема Банаха<br/></p><h3 id="814a2ed5-9140-4af4-9288-e3af54a46cb8" class=""><mark class="highlight-red">11. Примеры применения теоремы Банаха</mark></h3><p id="f7ffb8a9-9d89-4cee-8b55-407e83518a06" class="">Решение уравнений <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varphi(x)=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">φ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span><span>﻿</span></span><br/>Решение дифференциального уравнения (теорема Пикара)<br/></p><h3 id="ca51fe9b-55d3-4aa5-89e5-d439ac03ddb4" class=""><mark class="highlight-red">12. Нормированные пространства</mark></h3><p id="3cf81ade-2b37-42ff-bc8e-a435e187f820" class="">Линейное пространство<br/>Нормированное линейное пространство<br/>Аксиомы нормы (3 шт)<br/>Сходимость последовательности по норме<br/>Ограниченность множества в нормированном пространстве<br/>Фундаментальность последовательности в нормированном пространстве<br/>Банахово пространство<br/>Сходимость ряда в нормированном пространстве<br/>Критерий Коши для рядов в нормированном пространстве<br/>Абсолютная сходимость ряда в нормированном пространстве<br/></p><h3 id="ca286830-3d3b-43e1-98b5-b819f5d1481a" class=""><mark class="highlight-red">13. Конечномерные пространства</mark></h3><p id="fafae7b9-4509-46c5-b25e-39f33e3b6f11" class="">Линейная комбинация<br/>Линейная независимость<br/>Конечномерное нормированное пространство<br/>Базис конечномерного пространства<br/>Координаты элемента в нормированном пространстве<br/>Сходимость по норме в конечномерном пространстве<br/>Покоординатная сходимость в конечномерном пространстве<br/></p><h3 id="9732987b-b94b-4b07-b279-2df8ef57cd43" class=""><mark class="highlight-red">14. Линейные подпространства</mark></h3><p id="849add46-86c2-4e41-a808-8a0a6372f42a" class="">Линейное подмножество<br/>Линейная оболочка (подмножество порожденное множеством)<br/>Линейное подпространство<br/>Разложение пространства<br/></p><h3 id="d2f0ab39-db9d-413c-adcd-7f5edca17d3a" class=""><mark class="highlight-red">15. Задача о нахождении элемента наилучшего приближения</mark></h3><p id="b9dcee26-7a5e-4213-8c2c-ce944b0c41c2" class="">Элемент наилучшего приближения<br/>Задача Чебышёва<br/></p><h3 id="c7b51390-276b-4710-8a3b-e5b1eaf5bf75" class=""><mark class="highlight-red">16. Пространство со счетным базисом</mark></h3><p id="21a2e37f-08d2-47fc-a374-b67ecbae5345" class="">Бесконечномерное нормированное пространство<br/>Счетный базис<br/>Необходимое и достаточное условие счетного базиса<br/>Линейная независимость для бесконечного числа элементов<br/></p><h3 id="68873fba-98eb-424b-9102-136e2b252a6b" class=""><mark class="highlight-red">17. Евклидово и гильбертово пространства</mark></h3><p id="c27c83dd-1d69-4cdf-82ee-4c105514a22a" class="">Евклидово пространство<br/>Аксиомы скалярного произведения (4 шт)<br/>Гильбертово пространство<br/></p><h3 id="bb09e8b8-2161-4764-a5c0-6126dc41a928" class=""><mark class="highlight-red">18. Ортогональные системы элементов</mark></h3><p id="d382aca8-9b55-4384-a1e4-eca5034aa1e7" class="">Ортогональность векторов<br/>Свойства ортогональности (3 шт)<br/>Теорема Пифагора<br/>Ортогональность элемента и подпространства<br/>Ортогональность подпространств<br/>Ортогональная система элементов<br/>Ортонормированная система элементов<br/>Полная система ортогональных элементов<br/>Теорема об ортогонализации<br/></p><h3 id="63d00e11-ad04-4e3e-af24-63b373526bcf" class=""><mark class="highlight-red">19. Проекция элемента на подпространство</mark></h3><h3 id="3dd55c2e-828e-4ab5-be77-a5b402c02980" class=""><mark class="highlight-red">20. Ряды Фурье в гильбертовом пространстве</mark></h3><p id="c2b48b7d-d931-497a-837b-035ae2751e3a" class="">Коэффициенты Фурье<br/>Ряд Фурье<br/>Неравенство Бесселя<br/>Равенство Парсеваля<br/>Замкнутая система элементов<br/>Теорема Рисса-Фишера<br/></p><h3 id="a88e5ca2-5465-4991-8136-907e30b9a618" class=""><mark class="highlight-red">21. Комплексные евклидово и гильбертово пространства</mark></h3><p id="33455c1b-1996-4fd9-891e-b7b4aec04da9" class="">Комплексное евклидово пространство<br/>Аксиомы скалярного произведения (4 шт)<br/>Комплексное гильбертово пространство<br/>Неравенство Бесселя в комплексном случае<br/>Равенство Парсеваля в комплексном случае<br/></p><h3 id="2b7c66ea-c3a8-460b-ae82-872e4af6922b" class=""><mark class="highlight-red">22. Ряды Фурье периодических функций</mark></h3><p id="462c4f12-6a76-4b1d-a889-087226549f65" class="">Периодическая функция<br/>Коэффициенты Фурье для периодических функций<br/>Лемма 1<br/>Лемма Римана<br/></p><h3 id="dc169855-924c-4faf-a5ae-802fc6c9b7bd" class=""><mark class="highlight-red">23. Условия поточечной и равномерной сходимости рядов Фурье</mark></h3><h3 id="4d79caa4-9a7d-4686-bc6b-b5f803d00f13" class="block-color-red"><mark class="highlight-red">24. Неравенство Бесселя для периодических функций. Сходимость по норме рядов Фурье периодических функций</mark></h3><h3 id="e9c9e1e0-d544-4bc8-8f07-0a38fbb8ee33" class=""><mark class="highlight-red">25. Теорема единственности</mark></h3><p id="71252d56-4314-4beb-9d57-c5f2bbf9dd3f" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

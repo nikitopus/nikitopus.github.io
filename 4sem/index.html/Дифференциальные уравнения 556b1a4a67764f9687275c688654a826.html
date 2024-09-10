@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Дифференциальные уравнения</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="556b1a4a-6776-4f96-8727-5c688654a826" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/webb2.jpg" style="object-position:center 70%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">🌌</span></div><h1 class="page-title">Дифференциальные уравнения</h1><p class="page-description"></p></header><div class="page-body"><h2 id="6320bd93-1f71-4d53-99f8-840684f69729" class="">1. Теоремы существования</h2><figure id="c586cfe3-09bb-45f0-bc49-77b780071e4b" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/1%20%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0%20%D0%9F%D0%B8%D0%BA%D0%B0%D1%80%D0%B0%20c586cfe309bb45f0bc4977b780071e4b.html"><span class="icon">🐷</span>1. Теорема Пикара</a></figure><figure id="95963b46-f949-448e-a9b3-394ea25ca532" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/2%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%2095963b46f949448ea9b3394ea25ca532.html"><span class="icon">🤣</span>2. Случай линейного уравнения </a></figure><figure id="0b101bb5-1e33-4027-88b1-1a08f88c2b91" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/3%20%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D1%8B%20%D0%9F%D0%B8%D0%BA%D0%B0%D1%80%D0%B0%20%D0%B4%D0%BB%D1%8F%20%D0%BD%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%200b101bb51e33402788b11a08f88c2b91.html"><span class="icon">🔍</span>3. Формулировка теоремы Пикара для нормальной системы уравнений</a></figure><figure id="426f7aab-83d8-41d7-bb9a-7ce9a890694d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/4%20%D0%9D%D0%B5%D0%BF%D1%80%D0%B5%D1%80%D1%8B%D0%B2%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%9A%D0%BE%D1%88%D0%B8%20%D0%BE%D1%82%20%D0%BF%20426f7aab83d841d7bb9a7ce9a890694d.html"><span class="icon">💽</span>4. Непрерывная зависимость решения задачи Коши от параметров и начальных данных</a></figure><figure id="757e59aa-c4d5-4411-800d-e34c08fa7347" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/5%20%D0%A3%D1%81%D1%82%D0%BE%D0%B8%CC%86%D1%87%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D1%8C%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%92%D1%8B%D0%B1%D0%BE%D1%80%20%D0%BD%D1%83%D0%BB%D0%B5%D0%B2%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%D0%B1%D0%BB%D0%B8%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%20757e59aac4d54411800de34c08fa7347.html"><span class="icon">🎲</span>5. Устойчивость решения. Выбор нулевого приближения</a></figure><figure id="e14abcf8-76d8-4ca7-8585-36b222ff5fe8" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/6%20%D0%9E%D1%81%D0%BE%D0%B1%D1%8B%D0%B5%20%D1%82%D0%BE%D1%87%D0%BA%D0%B8%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BF%D0%B5%D1%80%D0%B2%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%BA%D0%B0%20e14abcf876d84ca7858536b222ff5fe8.html"><span class="icon">🪡</span>6. Особые точки уравнения первого порядка</a></figure><figure id="aa566e3d-9dcb-4e1f-9558-2bc7159f86a4" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/8%20%D0%A2%D0%BE%D1%87%D0%BA%D0%B8%20%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D0%B2%D0%B5%D1%81%D0%B8%D1%8F%20aa566e3d9dcb4e1f95582bc7159f86a4.html"><span class="icon">🧧</span>8. Точки равновесия</a></figure><figure id="433c5f0c-402d-4ee3-b022-de5880a03d4c" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/7%20%D0%9E%D1%81%D0%BE%D0%B1%D1%8B%D0%B5%20%D1%82%D0%BE%D1%87%D0%BA%D0%B8%20%D0%BD%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20%D0%B4%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%20433c5f0c402d4ee3b022de5880a03d4c.html"><span class="icon">🎮</span>7. Особые точки нормальной системы дифференциальных уравнений</a></figure><figure id="d4a8514a-bd08-4284-8911-00830c66f769" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/9%20%D0%92%D1%8B%D0%B2%D0%BE%D0%B4%20%D1%85%D0%B0%D1%80%D0%B0%D0%BA%D1%82%D0%B5%D1%80%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%BB%D1%8F%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%20d4a8514abd084284891100830c66f769.html"><span class="icon">🥋</span>9. Вывод характеристического уравнения для уравнения с дробно-линейной однородной правой частью</a></figure><figure id="dbd0d34f-c0fc-4a1b-8a47-3d9f66952cc2" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/10%20%D0%9E%D1%81%D0%BE%D0%B1%D0%B0%D1%8F%20%D1%82%D0%BE%D1%87%D0%BA%D0%B0%20%C2%AB%D1%83%D0%B7%D0%B5%D0%BB%C2%BB%20dbd0d34fc0fc4a1b8a473d9f66952cc2.html"><span class="icon">🪦</span>10. Особая точка «узел»</a></figure><figure id="02a1e038-d188-48b8-a604-525867639567" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/11%20%D0%9E%D1%81%D0%BE%D0%B1%D0%B0%D1%8F%20%D1%82%D0%BE%D1%87%D0%BA%D0%B0%20%C2%AB%D1%81%D0%B5%D0%B4%D0%BB%D0%BE%C2%BB%2002a1e038d18848b8a604525867639567.html"><span class="icon">🚙</span>11. Особая точка «седло»</a></figure><figure id="ba798e6b-5df3-475f-9bb9-ffadb4646b1a" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/12%20%D0%9E%D1%81%D0%BE%D0%B1%D0%B0%D1%8F%20%D1%82%D0%BE%D1%87%D0%BA%D0%B0%20%C2%AB%D1%84%D0%BE%D0%BA%D1%83%D1%81%C2%BB%20ba798e6b5df3475f9bb9ffadb4646b1a.html"><span class="icon">📽️</span>12. Особая точка «фокус»</a></figure><figure id="d472cfbc-506a-46f6-b083-e22dd1bdb6b2" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/13%20%D0%9E%D1%81%D0%BE%D0%B1%D0%B0%D1%8F%20%D1%82%D0%BE%D1%87%D0%BA%D0%B0%20%C2%AB%D1%86%D0%B5%D0%BD%D1%82%D1%80%C2%BB%20d472cfbc506a46f6b083e22dd1bdb6b2.html"><span class="icon">😄</span>13. Особая точка «центр»</a></figure><figure id="64f47e40-c15c-4bc2-922f-330d92bdf8f4" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/14%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%20%D0%BA%D1%80%D0%B0%D1%82%D0%BD%D1%8B%D1%85%20%D1%85%D0%B0%D1%80%D0%B0%D0%BA%D1%82%D0%B5%D1%80%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%87%D0%B8%D1%81%D0%B5%D0%BB%2064f47e40c15c4bc2922f330d92bdf8f4.html"><span class="icon">🖍️</span>14. Случай кратных характеристических чисел</a></figure><figure id="b58050e8-a4cd-42d6-a417-f409dbf8438a" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/15%20%D0%92%D1%8B%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D1%8B%D0%B8%CC%86%20%D1%83%D0%B7%D0%B5%D0%BB%20b58050e8a4cd42d6a417f409dbf8438a.html"><span class="icon">🕖</span>15. Вырожденный узел</a></figure><figure id="583374ad-f196-42b1-9efe-e3835f7aea7d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/16%20%D0%94%D0%B8%D0%BA%D1%80%D0%B8%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B8%CC%86%20%D1%83%D0%B7%D0%B5%D0%BB%20583374adf19642b19efee3835f7aea7d.html"><span class="icon">🎳</span>16. Дикритический узел</a></figure><figure id="2bfbe72a-fce6-4d80-9b45-b5dc36764937" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/17%20%D0%A0%D0%B0%D1%81%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%83%D1%81%D1%82%D0%BE%D0%B8%CC%86%D1%87%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%B8%20%D0%BD%D1%83%D0%BB%D0%B5%D0%B2%D0%BE%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B0%D0%B2%D1%82%202bfbe72afce64d809b45b5dc36764937.html"><span class="icon">🎠</span>17. Рассмотрение устойчивости нулевого решения автономной системы в зависимости от корней характеристического уравнения.</a></figure><figure id="d669d78a-baf4-4639-bbdb-2fae79df516d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/18%20%D0%93%D0%BE%D0%BB%D0%BE%D0%BC%D0%BE%D1%80%D1%84%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20d669d78abaf44639bbdb2fae79df516d.html"><span class="icon">🧸</span>18. Голоморфное решение</a></figure><figure id="248f611f-efa1-48f8-aa23-ebfe0aa513dc" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/19%20%D0%9C%D0%B0%D0%B6%D0%BE%D1%80%D0%B0%D0%BD%D1%82%D0%B0%20248f611fefa148f8aa23ebfe0aa513dc.html"><span class="icon">👾</span>19. Мажоранта</a></figure><figure id="b122e520-8d7c-4e8b-bb50-cf178bcdda18" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/20%20%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D1%8B%20%D0%9A%D0%BE%D1%88%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D0%BD%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%20b122e5208d7c4e8bbb50cf178bcdda18.html"><span class="icon">🚏</span>20. Формулировка теоремы Коши для нормальной системы 𝑛 уравнений</a></figure><figure id="c4e4bbe0-a3df-455c-b54c-31647d5b47bb" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/21%20%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0%20%D0%9A%D0%BE%D1%88%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20c4e4bbe0a3df455cb54c31647d5b47bb.html"><span class="icon">🛠️</span>21. Теорема Коши для линейной системы</a></figure><h2 id="8935c107-8d86-456e-ad56-67a5d1edc7f0" class="">2. Линейные ДУ 2-го порядка</h2><figure id="be38ef0b-3acd-44c5-a411-24adaea5162a" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/22%20%D0%98%D0%BD%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BE%D1%82%D0%BD%D0%BE%D1%81%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%20be38ef0b3acd44c5a41124adaea5162a.html"><span class="icon">🪑</span>22. Инвариантность линейного уравнения относительно преобразования независимой переменной </a></figure><figure id="cfe72ac4-7fff-4db2-b030-7212e02d36c6" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/23%20%D0%98%D0%BD%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BE%D1%82%D0%BD%D0%BE%D1%81%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%20cfe72ac47fff4db2b0307212e02d36c6.html"><span class="icon">👖</span>23. Инвариантность линейного уравнения относительно линейного преобразовании искомой функции</a></figure><figure id="7f9c569b-089a-4a0a-a9d3-778295de7e0d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/24%20%D0%A1%D0%B2%D0%BE%D0%B8%CC%86%D1%81%D1%82%D0%B2%D0%B0%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%207f9c569b089a4a0aa9d3778295de7e0d.html"><span class="icon">🛷</span>24.  Свойства решений однородного линейного уравнение 𝑛-го порядка</a></figure><figure id="e4c93541-fdd8-4314-8018-7a7327f810c6" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/25%20%D0%9B%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%B0%D1%8F%20%D0%BD%D0%B5%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C%20%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8%20%D0%9D%D0%B5%D0%BE%D0%B1%D1%85%D0%BE%D0%B4%D0%B8%D0%BC%D0%BE%D0%B5%20%D1%83%D1%81%D0%BB%20e4c93541fdd8431480187a7327f810c6.html"><span class="icon">🛗</span>25. Линейная независимость функции. Необходимое условие линейной зависимости 𝑛 функций </a></figure><figure id="1a66d9dd-7baa-4f49-a843-e2733c1834be" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/26%20%D0%9D%D0%B5%D0%BE%D0%B1%D1%85%D0%BE%D0%B4%D0%B8%D0%BC%D0%BE%D0%B5%20%D0%B8%20%D0%B4%D0%BE%D1%81%D1%82%D0%B0%D1%82%D0%BE%D1%87%D0%BD%D0%BE%D0%B5%20%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B5%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D0%BD%D0%B5%201a66d9dd7baa4f49a843e2733c1834be.html"><span class="icon">⛑️</span>26. Необходимое и достаточное условие линейной независимости 𝑛 решений однородного линейного уравнения 𝑛-го порядка</a></figure><figure id="d15626e9-dcec-49c5-a6a5-1217a0df08e9" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/27%20%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B0%20%D0%9E%D1%81%D1%82%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%E2%80%93%D0%9B%D0%B8%D1%83%D0%B2%D0%B8%D0%BB%D0%BB%D1%8F%20d15626e9dcec49c5a6a51217a0df08e9.html"><span class="icon">🧬</span>27. Формула Остроградского–Лиувилля </a></figure><figure id="27907600-28f0-4073-b704-82b7b59ae772" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/28%20%D0%9F%D0%BE%D0%BD%D1%8F%D1%82%D0%B8%D0%B5%20%D0%BE%20%D1%84%D1%83%D0%BD%D0%B4%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%202790760028f04073b70482b7b59ae772.html"><span class="icon">👩</span>28. Понятие о фундаментальной системе решений</a></figure><figure id="ed52a0f0-62a0-496c-9230-f29aba825341" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/29%20%D0%A7%D0%B8%D1%81%D0%BB%D0%BE%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE-%D0%BD%D0%B5%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D1%85%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE%20ed52a0f062a0496c9230f29aba825341.html"><span class="icon">🪕</span>29. Число линейно-независимых решений однородного линейного уравнения 𝑛-го порядка</a></figure><figure id="6e455b5e-fe0d-4d16-ba53-689a213b7aab" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/30%20%D0%9F%D0%BE%D0%BD%D0%B8%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%BA%D0%B0%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%206e455b5efe0d4d16ba53689a213b7aab.html"><span class="icon">✉️</span>30. Понижение порядка однородного линейного уравнения при помощи линейно независимых частных решений</a></figure><figure id="bcdbe6d1-91e0-45e1-b0a1-67206fb15f52" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/31%20%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%BE%D0%B1%D1%89%D0%B5%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BD%D0%B5%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%20bcdbe6d191e045e1b0a167206fb15f52.html"><span class="icon">🕗</span>31. Структура общего решения неоднородного уравнения</a></figure><figure id="cf0e8dc4-7757-436d-a7f0-f276f992569d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/32%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%BF%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%BD%D1%8B%D1%85%20(%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%20%D0%9B%20cf0e8dc47757436da7f0f276f992569d.html"><span class="icon">🦯</span>32. Метод вариации произвольных постоянных (метод Лагранжа) </a></figure><figure id="a609d9f2-d162-4f0f-9769-40d39562da02" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/33%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%9A%D0%BE%D1%88%D0%B8%20a609d9f2d1624f0f976940d39562da02.html"><span class="icon">🏬</span>33. Метод Коши</a></figure><h2 id="bfa5ec5f-e56d-495e-a646-003b8858bd21" class="">3. Линейные уравнения 𝑛-го порядка с постоянными коэффициентами </h2><figure id="db64bb2e-315a-473a-9769-d07a6a893d72" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/34%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%84%D1%83%D0%BD%D0%B4%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%20%D0%B8%20%D0%BE%20db64bb2e315a473a9769d07a6a893d72.html"><span class="icon">🚐</span>34. Построение фундаментальной системы решении и общего решения однородного уравнения. Случай различных корней характеристического уравнения</a></figure><figure id="e60e641c-5e18-40de-a2b4-31a7cbd2d714" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/35%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%84%D1%83%D0%BD%D0%B4%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%20%D0%B8%20%D0%BE%20e60e641c5e1840dea2b431a7cbd2d714.html"><span class="icon">🚿</span>35. Построение фундаментальной системы решении и общего решения однородного уравнения. Случай кратных корней характеристического уравнения</a></figure><figure id="4e25eaba-85cb-4a2f-8078-c0c7b3ab9421" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/36%20%D0%9E%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B5%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%BA%D0%B0%20%204e25eaba85cb4a2f8078c0c7b3ab9421.html"><span class="icon">🏏</span>36. Однородное линейное уравнение второго порядка с постоянными коэффициентами</a></figure><figure id="c90ab506-0228-40c1-950d-af5777599f68" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/37%20%D0%A1%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5%20%D0%BA%D0%BE%D0%BB%D0%B5%D0%B1%D0%B0%D0%BD%D0%B8%D1%8F%20c90ab506022840c1950daf5777599f68.html"><span class="icon">♠️</span>37. Свободные колебания</a></figure><figure id="f72ebe14-8e6c-42f1-ae9e-6c11489034c0" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/38%20%D0%92%D1%8B%D0%BD%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BA%D0%BE%D0%BB%D0%B5%D0%B1%D0%B0%D0%BD%D0%B8%D1%8F%20f72ebe148e6c42f1ae9e6c11489034c0.html"><span class="icon">🥈</span>38. Вынужденные колебания</a></figure><h2 id="2fba57e0-c82c-4d14-9373-cbb9d526c093" class="">4. Однородные линейные уравнения второго порядка</h2><figure id="91ccf425-419b-4e6d-b6a0-d0c8605c1251" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/39%20%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BA%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8E,%20%D0%BD%D0%B5%20%D1%81%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%89%D0%B5%D0%BC%D1%83%20%D1%87%D0%BB%D0%B5%D0%BD%D0%B0%20%D1%81%20%2091ccf425419b4e6db6a0d0c8605c1251.html"><span class="icon">📒</span>39. Приведение к уравнению, не содержащему члена с первой производной</a></figure><figure id="d5a104d3-f080-41cb-b4be-091f4da6083f" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/40%20%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BA%20%D1%81%D0%B0%D0%BC%D0%BE%D1%81%D0%BE%D0%BF%D1%80%D1%8F%D0%B6%D0%B5%CC%88%D0%BD%D0%BD%D0%BE%D0%BC%D1%83%20%D0%B2%D0%B8%D0%B4%D1%83%20d5a104d3f08041cbb4be091f4da6083f.html"><span class="icon">🕥</span>40. Приведение к самосопряжённому виду</a></figure><figure id="56168bdf-f7b3-43dd-a7bd-9685f6ab9a05" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/41%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B1%D1%89%D0%B5%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%2056168bdff7b343dda7bd9685f6ab9a05.html"><span class="icon">🕍</span>41. Построение общего решения однородного линейного уравнения второго порядка в случае, когда известно одно частное решение</a></figure><figure id="5fdcb806-4fbe-44e6-9ff2-4de42f345085" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/42%20%D0%9F%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%83%205fdcb8064fbe44e69ff24de42f345085.html"><span class="icon">🎃</span>42. Представление решений однородного линейного уравнения второго порядка в виде степенных рядов</a></figure><figure id="ad755f43-1690-42a5-998a-2a3a9961696f" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/43%20%D0%9F%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20%D0%B2%20%D0%BE%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20%D0%BE%D1%81%D0%BE%D0%B1%D0%BE%D0%B8%CC%86%20%D1%82%D0%BE%20ad755f43169042a5998a2a3a9961696f.html"><span class="icon">⛺</span>43. Представление решений в окрестности особой точки в виде обобщённых степенных рядов</a></figure><figure id="c588a004-3616-41c9-a50d-fd1479d9d64d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/44%20%D0%9A%D0%BE%D0%BB%D0%B5%D0%B1%D0%BB%D1%8E%D1%89%D0%B8%D0%B5%D1%81%D1%8F%20%D0%B8%20%D0%BD%D0%B5%D0%BA%D0%BE%D0%BB%D0%B5%D0%B1%D0%BB%D1%8E%D1%89%D0%B8%D0%B5%D1%81%D1%8F%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20c588a004361641c9a50dfd1479d9d64d.html"><span class="icon">🔈</span>44. Колеблющиеся и неколеблющиеся решения</a></figure><figure id="67e13579-d81d-4bd3-b99f-cc867a3501db" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/45%20%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0%20%D0%A8%D1%82%D1%83%D1%80%D0%BC%D0%B0%2067e13579d81d4bd3b99fcc867a3501db.html"><span class="icon">🌉</span>45. Теорема Штурма</a></figure><h2 id="dd4d0ab6-913e-4110-ba05-e7b3fe40f8ea" class="">5. Линейные системы ДУ</h2><figure id="aeafa3fb-5655-4f7d-a330-5274bb6b43b0" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/46%20%D0%9E%D0%B1%D1%89%D0%B8%D0%B5%20%D0%BF%D0%BE%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%20(1)%20aeafa3fb56554f7da3305274bb6b43b0.html"><span class="icon">🎎</span>46. Общие понятия (1)</a></figure><figure id="2bcc4d15-c4c8-4629-aff9-65b9a08aa46b" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/47%20%D0%9B%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%B0%D1%8F%20%D0%BD%D0%B5%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%20%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8%CC%86%20(1)%202bcc4d15c4c84629aff965b9a08aa46b.html"><span class="icon">✏️</span>47. Линейная независимость систем функций (1)</a></figure><figure id="4cff9391-9f10-4892-85f6-7111cce7960a" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/48%20%D0%9D%D0%B5%D0%BE%D0%B1%D1%85%D0%BE%D0%B4%D0%B8%D0%BC%D0%BE%D0%B5%20%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B5%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B8%20%F0%9D%91%9B%20%D1%81%D0%B8%204cff93919f10489285f67111cce7960a.html"><span class="icon">🩹</span>48. Необходимое условие линейной зависимости 𝑛 систем функций (1)</a></figure><figure id="a298f711-8421-45c7-894f-f36e78a2f189" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/49%20%D0%9D%D0%B5%D0%BE%D0%B1%D1%85%D0%BE%D0%B4%D0%B8%D0%BC%D0%BE%D0%B5%20%D0%B8%20%D0%B4%D0%BE%D1%81%D1%82%D0%B0%D1%82%D0%BE%D1%87%D0%BD%D0%BE%D0%B5%20%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B5%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D0%BD%D0%B5%20a298f711842145c7894ff36e78a2f189.html"><span class="icon">🪐</span>49. Необходимое и достаточное условие линейной независимости 𝑛 решений однородной линейной системы 𝑛 уравнений (1)</a></figure><figure id="c2dba64d-456d-462a-a0bf-0609a805a59d" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/50%20%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B0%20%D0%9E%D1%81%D1%82%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%E2%80%93%D0%9B%D0%B8%D1%83%D0%B2%D0%B8%D0%BB%D0%BB%D1%8F%E2%80%93%D0%AF%D0%BA%D0%BE%D0%B1%D0%B8%20(1)%20c2dba64d456d462aa0bf0609a805a59d.html"><span class="icon">🎋</span>50. Формула Остроградского–Лиувилля–Якоби (1)</a></figure><figure id="00b394d3-ce1e-4d26-8c1f-f2df37b106ef" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/51%20%D0%A4%D1%83%D0%BD%D0%B4%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20(1)%2000b394d3ce1e4d268c1ff2df37b106ef.html"><span class="icon">🏒</span>51. Фундаментальная система решений (1)</a></figure><figure id="3d66061e-4f17-465f-a25f-67f4af070d10" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/52%20%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0%20%D0%BE%20%D1%81%D1%83%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%84%D1%83%D0%BD%D0%B4%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%203d66061e4f17465fa25f67f4af070d10.html"><span class="icon">🥇</span>52. Теорема о существовании фундаментальной системы решений (1)</a></figure><figure id="f522641a-53f6-431e-9679-a43548001e7e" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/53%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B1%D1%89%D0%B5%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20f522641a53f6431e9679a43548001e7e.html"><span class="icon">⛪</span>53. Построение общего решения </a></figure><figure id="8a6b8901-443f-4086-a903-3a0ce60735b1" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/54%20%D0%A7%D0%B8%D1%81%D0%BB%D0%BE%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE-%D0%BD%D0%B5%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D1%85%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B8%CC%86%208a6b8901443f4086a9033a0ce60735b1.html"><span class="icon">✨</span>54. Число линейно-независимых решений однородной линейной системы 𝑛 уравнений. Первые интегралы (1)</a></figure><figure id="899f8b5c-da08-4332-99fb-9a802eadbe6c" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/55%20%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%BE%D0%B1%D1%89%D0%B5%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BD%D0%B5%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20899f8b5cda08433299fb9a802eadbe6c.html"><span class="icon">🔮</span>55. Структура общего решения неоднородной системы</a></figure><figure id="4664534d-8aa3-4656-9924-780c2122745f" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/56%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%BF%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%BD%D1%8B%D1%85%20(%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%20%D0%9B%204664534d8aa346569924780c2122745f.html"><span class="icon">👠</span>56. Метод вариации произвольных постоянных (метод Лагранжа) (1)</a></figure><h2 id="faeb097c-53be-42aa-8d72-0dc3f245d759" class="">6. Линейные системы ДУ с постоянными коэффициентами</h2><figure id="c930bd2f-ecab-4325-b2f5-6830313d4e5a" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/57%20%D0%A4%D1%83%D0%BD%D0%B4%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8%CC%86%20%D0%B8%20%D0%BE%D0%B1%D1%89%D0%B5%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%20c930bd2fecab4325b2f56830313d4e5a.html"><span class="icon">⚓</span>57. Фундаментальная система решений и общее решение однородной линейной системы для различных корней характеристического уравнения</a></figure><figure id="1659c5b7-7309-4740-8c5f-d91cfb589057" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/58%20%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%20%D0%BD%D0%B0%D0%BB%D0%B8%D1%87%D0%B8%D1%8F%20%D0%BA%D1%80%D0%B0%D1%82%D0%BD%D1%8B%D1%85%20%D0%BA%D0%BE%D1%80%D0%BD%D0%B5%D0%B8%CC%86%20%D1%85%D0%B0%D1%80%D0%B0%D0%BA%D1%82%D0%B5%D1%80%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%201659c5b7730947408c5fd91cfb589057.html"><span class="icon">🎆</span>58. Случай наличия кратных корней характеристического уравнения</a></figure><figure id="bc714ab4-a9b5-412d-b275-c6ca4683b351" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/59%20%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0%20%D0%BE%D0%B1%20%D0%B0%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B8%CC%86%20%D1%83%D1%81%D1%82%D0%BE%D0%B8%CC%86%D1%87%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%B8%20(%D0%B2%20%D1%81%D0%BC%20bc714ab4a9b5412db275c6ca4683b351.html"><span class="icon">🚋</span>59. Теорема об асимптотической устойчивости (в смысле Ляпунова)</a></figure><figure id="ef3dcf9a-f3cf-461b-ac14-79eb9e1d0303" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/60%20%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0%20%D0%BE%20%D0%BD%D0%B5%D1%83%D1%81%D1%82%D0%BE%D0%B8%CC%86%D1%87%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%B8%20%D0%BD%D1%83%D0%BB%D0%B5%D0%B2%D0%BE%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%BE%D0%B4%D0%BD%D0%BE%20ef3dcf9af3cf461bac1479eb9e1d0303.html"><span class="icon">🙅🏿‍♂️</span>60. Теорема о неустойчивости нулевого решения однородной линейной системы с постоянными
+коэффициентами</a></figure><figure id="bf17e3c4-a5d1-4b73-a3b5-76ac4b0e57ea" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/61%20%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B8%CC%86%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20%D0%BA%20%D1%81%D0%B8%D1%81%20bf17e3c4a5d14b73a3b576ac4b0e57ea.html"><span class="icon">☺️</span>61. Приведение однородной линейной системы к системе с постоянными коэффициентами при помощи замены независимой переменной</a></figure><figure id="d9ce95c5-aadf-40ca-822c-ce899e40f413" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/62%20%D0%98%D0%BD%D1%82%D0%B5%D0%B3%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B5%D0%BE%D0%B4%D0%BD%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%D0%B8%CC%86%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20d9ce95c5aadf40ca822cce899e40f413.html"><span class="icon">🫥</span>62. Интегрирование неоднородной линейной системы с постоянными коэффициентами методом вариации произвольных постоянных</a></figure><figure id="7a5b0bef-0ff9-4159-a276-84040812de3b" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/63%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%94%D0%B0%D0%BB%D0%B0%D0%BC%D0%B1%D0%B5%D1%80%D0%B0%20%D0%B4%D0%BB%D1%8F%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20%D0%B4%D0%B2%D1%83%D1%85%20%D1%83%D1%80%D0%B0%207a5b0bef0ff94159a27684040812de3b.html"><span class="icon">🐯</span>63. Метод Даламбера для линейной системы двух уравнений первого порядка</a></figure><figure id="406d0fa4-d932-44ab-a53f-2c471021e3b7" class="link-to-page"><a href="%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20556b1a4a67764f9687275c688654a826/64%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%20%D0%94%D0%B0%D0%BB%D0%B0%D0%BC%D0%B1%D0%B5%D1%80%D0%B0%20%D0%B4%D0%BB%D1%8F%20%D0%BB%D0%B8%D0%BD%D0%B5%D0%B8%CC%86%D0%BD%D0%BE%D0%B8%CC%86%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B%20%D0%B4%D0%B2%D1%83%D1%85%20%D1%83%D1%80%D0%B0%20406d0fa4d93244aba53f2c471021e3b7.html"><span class="icon">🍒</span>64. Метод Даламбера для линейной системы двух уравнений 𝑛-го порядка.</a></figure><p id="38d50ae3-6708-4d68-af83-e0f376a5e9ad" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
